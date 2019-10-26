@@ -1,0 +1,548 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="FTDatabaseModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="ContactInfo">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" Nullable="false" />
+          <Property Name="phone" Type="varchar" MaxLength="12" />
+          <Property Name="email" Type="varchar" MaxLength="200" />
+          <Property Name="politicianId" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Government">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="startDate" Type="date" Nullable="false" />
+          <Property Name="endDate" Type="date" />
+          <Property Name="partiesInThisGov" Type="varchar" MaxLength="10" />
+        </EntityType>
+        <EntityType Name="Minister">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" Nullable="false" />
+          <Property Name="politicianId" Type="int" Nullable="false" />
+          <Property Name="ministerialPostId" Type="int" Nullable="false" />
+          <Property Name="startDate" Type="date" Nullable="false" />
+          <Property Name="endDate" Type="date" />
+        </EntityType>
+        <EntityType Name="MinisterialPost">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="title" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="governmentId" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Parliament">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="startYear" Type="int" Nullable="false" />
+          <Property Name="endYear" Type="int" />
+        </EntityType>
+        <EntityType Name="ParliamentMember">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="politicianId" Type="int" Nullable="false" />
+          <Property Name="parliamentId" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Party">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="name" Type="varchar" MaxLength="200" Nullable="false" />
+          <Property Name="initial" Type="varchar" MaxLength="5" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Politician">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="firstname" Type="varchar" MaxLength="150" Nullable="false" />
+          <Property Name="lastname" Type="varchar" MaxLength="150" />
+          <Property Name="partyId" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="principal_id" Type="int" Nullable="false" />
+          <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="version" Type="int" />
+          <Property Name="definition" Type="varbinary(max)" />
+        </EntityType>
+        <Association Name="FK_ContactInfo_Politician">
+          <End Role="Politician" Type="Self.Politician" Multiplicity="1" />
+          <End Role="ContactInfo" Type="Self.ContactInfo" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Politician">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="ContactInfo">
+              <PropertyRef Name="politicianId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Minister_MinisterialPost">
+          <End Role="MinisterialPost" Type="Self.MinisterialPost" Multiplicity="1" />
+          <End Role="Minister" Type="Self.Minister" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="MinisterialPost">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Minister">
+              <PropertyRef Name="ministerialPostId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Minister_Politician">
+          <End Role="Politician" Type="Self.Politician" Multiplicity="1" />
+          <End Role="Minister" Type="Self.Minister" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Politician">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Minister">
+              <PropertyRef Name="politicianId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_MinisterialPost_Government">
+          <End Role="Government" Type="Self.Government" Multiplicity="1" />
+          <End Role="MinisterialPost" Type="Self.MinisterialPost" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Government">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="MinisterialPost">
+              <PropertyRef Name="governmentId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ParliamentMember_Parliament">
+          <End Role="Parliament" Type="Self.Parliament" Multiplicity="1" />
+          <End Role="ParliamentMember" Type="Self.ParliamentMember" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Parliament">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="ParliamentMember">
+              <PropertyRef Name="parliamentId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ParliamentMember_Politician">
+          <End Role="Politician" Type="Self.Politician" Multiplicity="1" />
+          <End Role="ParliamentMember" Type="Self.ParliamentMember" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Politician">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="ParliamentMember">
+              <PropertyRef Name="politicianId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Politician_Party">
+          <End Role="Party" Type="Self.Party" Multiplicity="1" />
+          <End Role="Politician" Type="Self.Politician" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Party">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Politician">
+              <PropertyRef Name="partyId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="FTDatabaseModelStoreContainer">
+          <EntitySet Name="ContactInfo" EntityType="Self.ContactInfo" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Government" EntityType="Self.Government" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Minister" EntityType="Self.Minister" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="MinisterialPost" EntityType="Self.MinisterialPost" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Parliament" EntityType="Self.Parliament" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ParliamentMember" EntityType="Self.ParliamentMember" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Party" EntityType="Self.Party" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Politician" EntityType="Self.Politician" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_ContactInfo_Politician" Association="Self.FK_ContactInfo_Politician">
+            <End Role="Politician" EntitySet="Politician" />
+            <End Role="ContactInfo" EntitySet="ContactInfo" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Minister_MinisterialPost" Association="Self.FK_Minister_MinisterialPost">
+            <End Role="MinisterialPost" EntitySet="MinisterialPost" />
+            <End Role="Minister" EntitySet="Minister" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Minister_Politician" Association="Self.FK_Minister_Politician">
+            <End Role="Politician" EntitySet="Politician" />
+            <End Role="Minister" EntitySet="Minister" />
+          </AssociationSet>
+          <AssociationSet Name="FK_MinisterialPost_Government" Association="Self.FK_MinisterialPost_Government">
+            <End Role="Government" EntitySet="Government" />
+            <End Role="MinisterialPost" EntitySet="MinisterialPost" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ParliamentMember_Parliament" Association="Self.FK_ParliamentMember_Parliament">
+            <End Role="Parliament" EntitySet="Parliament" />
+            <End Role="ParliamentMember" EntitySet="ParliamentMember" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ParliamentMember_Politician" Association="Self.FK_ParliamentMember_Politician">
+            <End Role="Politician" EntitySet="Politician" />
+            <End Role="ParliamentMember" EntitySet="ParliamentMember" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Politician_Party" Association="Self.FK_Politician_Party">
+            <End Role="Party" EntitySet="Party" />
+            <End Role="Politician" EntitySet="Politician" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="FTDatabaseModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="ContactInfo">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" />
+          <Property Name="phone" Type="String" MaxLength="12" FixedLength="false" Unicode="false" />
+          <Property Name="email" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="politicianId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Politician" Relationship="Self.FK_ContactInfo_Politician" FromRole="ContactInfo" ToRole="Politician" />
+        </EntityType>
+        <EntityType Name="Government">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="startDate" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="endDate" Type="DateTime" Precision="0" />
+          <Property Name="partiesInThisGov" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="MinisterialPost" Relationship="Self.FK_MinisterialPost_Government" FromRole="Government" ToRole="MinisterialPost" />
+        </EntityType>
+        <EntityType Name="Minister">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" />
+          <Property Name="politicianId" Type="Int32" Nullable="false" />
+          <Property Name="ministerialPostId" Type="Int32" Nullable="false" />
+          <Property Name="startDate" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="endDate" Type="DateTime" Precision="0" />
+          <NavigationProperty Name="MinisterialPost" Relationship="Self.FK_Minister_MinisterialPost" FromRole="Minister" ToRole="MinisterialPost" />
+          <NavigationProperty Name="Politician" Relationship="Self.FK_Minister_Politician" FromRole="Minister" ToRole="Politician" />
+        </EntityType>
+        <EntityType Name="MinisterialPost">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="title" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="governmentId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Government" Relationship="Self.FK_MinisterialPost_Government" FromRole="MinisterialPost" ToRole="Government" />
+          <NavigationProperty Name="Minister" Relationship="Self.FK_Minister_MinisterialPost" FromRole="MinisterialPost" ToRole="Minister" />
+        </EntityType>
+        <EntityType Name="Parliament">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="startYear" Type="Int32" Nullable="false" />
+          <Property Name="endYear" Type="Int32" />
+          <NavigationProperty Name="ParliamentMember" Relationship="Self.FK_ParliamentMember_Parliament" FromRole="Parliament" ToRole="ParliamentMember" />
+        </EntityType>
+        <EntityType Name="ParliamentMember">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="politicianId" Type="Int32" Nullable="false" />
+          <Property Name="parliamentId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Parliament" Relationship="Self.FK_ParliamentMember_Parliament" FromRole="ParliamentMember" ToRole="Parliament" />
+          <NavigationProperty Name="Politician" Relationship="Self.FK_ParliamentMember_Politician" FromRole="ParliamentMember" ToRole="Politician" />
+        </EntityType>
+        <EntityType Name="Party">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="name" Type="String" MaxLength="200" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="initial" Type="String" MaxLength="5" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="Politician" Relationship="Self.FK_Politician_Party" FromRole="Party" ToRole="Politician" />
+        </EntityType>
+        <EntityType Name="Politician">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="firstname" Type="String" MaxLength="150" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="lastname" Type="String" MaxLength="150" FixedLength="false" Unicode="false" />
+          <Property Name="partyId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="ContactInfo" Relationship="Self.FK_ContactInfo_Politician" FromRole="Politician" ToRole="ContactInfo" />
+          <NavigationProperty Name="Minister" Relationship="Self.FK_Minister_Politician" FromRole="Politician" ToRole="Minister" />
+          <NavigationProperty Name="ParliamentMember" Relationship="Self.FK_ParliamentMember_Politician" FromRole="Politician" ToRole="ParliamentMember" />
+          <NavigationProperty Name="Party" Relationship="Self.FK_Politician_Party" FromRole="Politician" ToRole="Party" />
+        </EntityType>
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="principal_id" Type="Int32" Nullable="false" />
+          <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="version" Type="Int32" />
+          <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+        </EntityType>
+        <Association Name="FK_ContactInfo_Politician">
+          <End Role="Politician" Type="Self.Politician" Multiplicity="1" />
+          <End Role="ContactInfo" Type="Self.ContactInfo" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Politician">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="ContactInfo">
+              <PropertyRef Name="politicianId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_MinisterialPost_Government">
+          <End Role="Government" Type="Self.Government" Multiplicity="1" />
+          <End Role="MinisterialPost" Type="Self.MinisterialPost" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Government">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="MinisterialPost">
+              <PropertyRef Name="governmentId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Minister_MinisterialPost">
+          <End Role="MinisterialPost" Type="Self.MinisterialPost" Multiplicity="1" />
+          <End Role="Minister" Type="Self.Minister" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="MinisterialPost">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Minister">
+              <PropertyRef Name="ministerialPostId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Minister_Politician">
+          <End Role="Politician" Type="Self.Politician" Multiplicity="1" />
+          <End Role="Minister" Type="Self.Minister" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Politician">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Minister">
+              <PropertyRef Name="politicianId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ParliamentMember_Parliament">
+          <End Role="Parliament" Type="Self.Parliament" Multiplicity="1" />
+          <End Role="ParliamentMember" Type="Self.ParliamentMember" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Parliament">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="ParliamentMember">
+              <PropertyRef Name="parliamentId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ParliamentMember_Politician">
+          <End Role="Politician" Type="Self.Politician" Multiplicity="1" />
+          <End Role="ParliamentMember" Type="Self.ParliamentMember" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Politician">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="ParliamentMember">
+              <PropertyRef Name="politicianId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Politician_Party">
+          <End Role="Party" Type="Self.Party" Multiplicity="1" />
+          <End Role="Politician" Type="Self.Politician" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Party">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Politician">
+              <PropertyRef Name="partyId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="FTDatabaseEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="ContactInfo" EntityType="Self.ContactInfo" />
+          <EntitySet Name="Government" EntityType="Self.Government" />
+          <EntitySet Name="Minister" EntityType="Self.Minister" />
+          <EntitySet Name="MinisterialPost" EntityType="Self.MinisterialPost" />
+          <EntitySet Name="Parliament" EntityType="Self.Parliament" />
+          <EntitySet Name="ParliamentMember" EntityType="Self.ParliamentMember" />
+          <EntitySet Name="Party" EntityType="Self.Party" />
+          <EntitySet Name="Politician" EntityType="Self.Politician" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" />
+          <AssociationSet Name="FK_ContactInfo_Politician" Association="Self.FK_ContactInfo_Politician">
+            <End Role="Politician" EntitySet="Politician" />
+            <End Role="ContactInfo" EntitySet="ContactInfo" />
+          </AssociationSet>
+          <AssociationSet Name="FK_MinisterialPost_Government" Association="Self.FK_MinisterialPost_Government">
+            <End Role="Government" EntitySet="Government" />
+            <End Role="MinisterialPost" EntitySet="MinisterialPost" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Minister_MinisterialPost" Association="Self.FK_Minister_MinisterialPost">
+            <End Role="MinisterialPost" EntitySet="MinisterialPost" />
+            <End Role="Minister" EntitySet="Minister" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Minister_Politician" Association="Self.FK_Minister_Politician">
+            <End Role="Politician" EntitySet="Politician" />
+            <End Role="Minister" EntitySet="Minister" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ParliamentMember_Parliament" Association="Self.FK_ParliamentMember_Parliament">
+            <End Role="Parliament" EntitySet="Parliament" />
+            <End Role="ParliamentMember" EntitySet="ParliamentMember" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ParliamentMember_Politician" Association="Self.FK_ParliamentMember_Politician">
+            <End Role="Politician" EntitySet="Politician" />
+            <End Role="ParliamentMember" EntitySet="ParliamentMember" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Politician_Party" Association="Self.FK_Politician_Party">
+            <End Role="Party" EntitySet="Party" />
+            <End Role="Politician" EntitySet="Politician" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="FTDatabaseModelStoreContainer" CdmEntityContainer="FTDatabaseEntities">
+          <EntitySetMapping Name="ContactInfo">
+            <EntityTypeMapping TypeName="FTDatabaseModel.ContactInfo">
+              <MappingFragment StoreEntitySet="ContactInfo">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="phone" ColumnName="phone" />
+                <ScalarProperty Name="email" ColumnName="email" />
+                <ScalarProperty Name="politicianId" ColumnName="politicianId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Government">
+            <EntityTypeMapping TypeName="FTDatabaseModel.Government">
+              <MappingFragment StoreEntitySet="Government">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="startDate" ColumnName="startDate" />
+                <ScalarProperty Name="endDate" ColumnName="endDate" />
+                <ScalarProperty Name="partiesInThisGov" ColumnName="partiesInThisGov" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Minister">
+            <EntityTypeMapping TypeName="FTDatabaseModel.Minister">
+              <MappingFragment StoreEntitySet="Minister">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="politicianId" ColumnName="politicianId" />
+                <ScalarProperty Name="ministerialPostId" ColumnName="ministerialPostId" />
+                <ScalarProperty Name="startDate" ColumnName="startDate" />
+                <ScalarProperty Name="endDate" ColumnName="endDate" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="MinisterialPost">
+            <EntityTypeMapping TypeName="FTDatabaseModel.MinisterialPost">
+              <MappingFragment StoreEntitySet="MinisterialPost">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="title" ColumnName="title" />
+                <ScalarProperty Name="governmentId" ColumnName="governmentId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Parliament">
+            <EntityTypeMapping TypeName="FTDatabaseModel.Parliament">
+              <MappingFragment StoreEntitySet="Parliament">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="startYear" ColumnName="startYear" />
+                <ScalarProperty Name="endYear" ColumnName="endYear" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ParliamentMember">
+            <EntityTypeMapping TypeName="FTDatabaseModel.ParliamentMember">
+              <MappingFragment StoreEntitySet="ParliamentMember">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="politicianId" ColumnName="politicianId" />
+                <ScalarProperty Name="parliamentId" ColumnName="parliamentId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Party">
+            <EntityTypeMapping TypeName="FTDatabaseModel.Party">
+              <MappingFragment StoreEntitySet="Party">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="initial" ColumnName="initial" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Politician">
+            <EntityTypeMapping TypeName="FTDatabaseModel.Politician">
+              <MappingFragment StoreEntitySet="Politician">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="firstname" ColumnName="firstname" />
+                <ScalarProperty Name="lastname" ColumnName="lastname" />
+                <ScalarProperty Name="partyId" ColumnName="partyId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="sysdiagrams">
+            <EntityTypeMapping TypeName="FTDatabaseModel.sysdiagrams">
+              <MappingFragment StoreEntitySet="sysdiagrams">
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="principal_id" ColumnName="principal_id" />
+                <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
+                <ScalarProperty Name="version" ColumnName="version" />
+                <ScalarProperty Name="definition" ColumnName="definition" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

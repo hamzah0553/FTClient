@@ -1,0 +1,45 @@
+﻿<Window x:Class="FTClientApplication.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:FTClientApplication"
+        mc:Ignorable="d"
+        Title="Start window" 
+        Height="675" Width="1200">
+    
+    <Grid Background="White">
+        <!--Defining Grid Definitions-->
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition></ColumnDefinition>
+            <ColumnDefinition></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition></RowDefinition>
+        </Grid.RowDefinitions>
+        
+        <!--This is Danish Flag Button-->
+        <Button Grid.Column="0" Grid.Row="0" Height="330" Width="450" Background="Transparent"
+                BorderThickness="0" BorderBrush="Transparent" VerticalAlignment="Center"
+                HorizontalAlignment="Right" Margin="25" Cursor="Hand" Click="Open_Danish_Parliament">
+            <StackPanel>
+                <Image Stretch="Fill" Source="/Resource/Images/DanishFlag.jpg" Grid.RowSpan="1"/>
+                <Label Content="Den danske parliament" FontSize="18" 
+                       HorizontalAlignment="Center" Width="224">
+                </Label>
+            </StackPanel>
+        </Button>
+        
+        <!--This is EU Flag Button -->
+        <Button Grid.Column="1" Grid.Row="0" Height="330" Width="450" Background="Transparent"
+                BorderThickness="0" BorderBrush="Transparent" HorizontalAlignment="Left" Margin="25"
+                Cursor="Hand" Click="Open_EU_Parliament">
+            <StackPanel>
+                <Image Stretch="Fill" Source="/Resource/Images/EUFlag.png" Grid.RowSpan="1"/>
+                <Label Content="EU parliament" FontSize="18" HorizontalAlignment="Center" 
+                       Width="150">
+                </Label>
+            </StackPanel>
+        </Button>
+    </Grid>
+</Window>
