@@ -14,6 +14,8 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 
 using FTClientApplication;
+using FTClientApplication.Model;
+using FTClientApplication.View.Dk.Crud;
 using FTClientApplication.ViewModel.Dk;
 
 namespace FTClientApplication.View.Dk.Pages
@@ -23,15 +25,32 @@ namespace FTClientApplication.View.Dk.Pages
     /// </summary>
     public partial class ParliamentPage : Page
     {
+        ParliamentVM parliament = new ParliamentVM();
         public ParliamentPage()
         {
             InitializeComponent();
+            Load();
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            ParliamentVM parliament = new ParliamentVM();
+
             parliament.AddParliament();
+        }
+
+        private void Load()
+        {
+            var politicians = parliament.GetParliamentWithMembers(1);
+            foreach (var politician in politicians)
+            {
+                parliamentGrid.Items.Add(politician);
+            }
+        }
+
+        private void EditMember_Click(object sender, RoutedEventArgs e)
+        {
+            EditWindow edit = new EditWindow();
+            edit.Show();
         }
     }
 }

@@ -9,16 +9,18 @@
       Title="Parliament">
 
     <DockPanel>
-        <StackPanel Orientation="Horizontal" DockPanel.Dock="Top">
-            <Button Height="20" Width="150" Click="Button_Click">Create Parliament</Button>
-        </StackPanel>
-        <DataGrid>
+        <UniformGrid DockPanel.Dock="Bottom" Columns="3" Rows="1" Height="40">
+            <Button Height="25" Width="100" Click="EditMember_Click">Redigere</Button>
+            <Button Height="25" Width="100">Tilføj</Button>
+            <Button Height="25" Width="100">Slet</Button>
+        </UniformGrid>
+        <DataGrid x:Name="parliamentGrid" IsReadOnly="True">
             <DataGrid.Columns>
-                <DataGridTextColumn Header="Fornavn" Width="*"></DataGridTextColumn>
-                <DataGridTextColumn Header="Efternavn" Width="*"></DataGridTextColumn>
-                <DataGridTextColumn Header="Telefon" Width="*"></DataGridTextColumn>
-                <DataGridTextColumn Header="Email" Width="*"></DataGridTextColumn>
-                <DataGridTextColumn Header="Parti" Width="*"></DataGridTextColumn>
+                <DataGridTextColumn Header="Fornavn" Width="*" Binding="{Binding Firstname}"></DataGridTextColumn>
+                <DataGridTextColumn Header="Efternavn" Width="*" Binding="{Binding Lastname}"></DataGridTextColumn>
+                <DataGridTextColumn Header="Telefon" Width="*" Binding="{Binding Phone}"></DataGridTextColumn>
+                <DataGridTextColumn Header="Email" Width="*" Binding="{Binding Email}"></DataGridTextColumn>
+                <DataGridTextColumn Header="Parti" Width="*" Binding="{Binding Party}"></DataGridTextColumn>
             </DataGrid.Columns>
         </DataGrid>
     </DockPanel>

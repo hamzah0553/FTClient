@@ -44,6 +44,12 @@
     <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\packages\EntityFramework.6.3.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
     </Reference>
+    <Reference Include="HtmlAgilityPack, Version=1.11.16.0, Culture=neutral, PublicKeyToken=bd319b19eaf3b43a, processorArchitecture=MSIL">
+      <HintPath>..\packages\HtmlAgilityPack.1.11.16\lib\Net45\HtmlAgilityPack.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.12.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Data" />
@@ -94,6 +100,11 @@
     <Compile Include="Model\MinisterialPost.cs">
       <DependentUpon>EntityModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Model\OdataModels\ContactInfo.cs" />
+    <Compile Include="Model\OdataModels\ExtractedValues.cs" />
+    <Compile Include="Model\OdataModels\Odata.cs" />
+    <Compile Include="Model\OdataModels\OdataClient.cs" />
+    <Compile Include="Model\OdataModels\Value.cs" />
     <Compile Include="Model\Parliament.cs">
       <DependentUpon>EntityModel.tt</DependentUpon>
     </Compile>
@@ -111,6 +122,12 @@
     </Compile>
     <Compile Include="ViewModel\Dk\ParliamentVM.cs" />
     <Compile Include="ViewModel\MainApp.cs" />
+    <Compile Include="View\Dk\Crud\EditWindow.xaml.cs">
+      <DependentUpon>EditWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Dk\Crud\InsertWindow.xaml.cs">
+      <DependentUpon>InsertWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\Dk\Dashboard.xaml.cs">
       <DependentUpon>Dashboard.xaml</DependentUpon>
     </Compile>
@@ -132,6 +149,14 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="View\Dk\Crud\EditWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Dk\Crud\InsertWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="View\Dk\Dashboard.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -183,7 +208,9 @@
     <Resource Include="Resource\Images\DanishFlag.jpg" />
     <Resource Include="Resource\Images\EUFlag.png" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Properties\DataSources\" />
+  </ItemGroup>
   <ItemGroup>
     <Content Include="Model\EntityModel.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
