@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 using FTClientApplication.Model;
+using FTClientApplication.OdataConsumer;
 
 namespace FTClientApplication.ViewModel.Dk
 {
@@ -16,10 +17,15 @@ namespace FTClientApplication.ViewModel.Dk
         public void AddParliament()
         {
             Parliament parliament = new Parliament();
-            parliament.startYear = 2015;
-            parliament.endYear = 2019;
+            DateTime date = DateTime.Now;
+            parliament.startYear = date.Year;
             entities.Parliament.Add(parliament);
             entities.SaveChanges();
+        }
+
+        public List<Parliament> GetParliaments()
+        {
+            return entities.Parliament.ToList();
         }
 
         public void EditMember(CustomPolitcian customPolitcian)
@@ -32,23 +38,11 @@ namespace FTClientApplication.ViewModel.Dk
 
         }
 
-        public List<CustomPolitcian> GetParliamentWithMembers(int parliamentÏd)
+        //gets members from specifik parliament
+        public List<CustomPolitcian> GetParliamentWithMembers(int parliamentYear)
         {
-            /*var members = (from politican in entities.Politician
-                           join member in entities.ParliamentMember on
-                           politican.id equals member.politicianId
-                           join party in entities.Party on politican.partyId equals party.id
-                           join contact in entities.ContactInfo on politican.id equals contact.politicianId
-                           select new
-                           {
-                               firstname = politican.firstname,
-                               lastname = politican.lastname,
-                               party = party.name,
-                               phone = contact.phone,
-                               email = contact.email
-
-                           }).ToList();*/
-            var members = entities.ParliamentMember.Where(p => p.parliamentId == parliamentÏd).ToList();
+            Parliament selectedParliament = entities.Parliament.Where(p => p.startYear == parliamentYear).SingleOrDefault();
+            var members = entities.ParliamentMember.Where(p => p.parliamentId == selectedParliament.id).ToList();
             List<CustomPolitcian> politcians = new List<CustomPolitcian>();
             foreach (var member in members)
             {
@@ -68,6 +62,7 @@ namespace FTClientApplication.ViewModel.Dk
         }
     }
 
+    //the displayed data in datagrid view
     class CustomPolitcian
     {
         public int PoliticianId { get; set; }

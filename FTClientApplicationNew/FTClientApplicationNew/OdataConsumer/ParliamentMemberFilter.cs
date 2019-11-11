@@ -5,9 +5,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-using OdataFtClientConsumer.Model;
+using FTClientApplication.Model;
+using FTClientApplication.Model.OdataModels;
 
-namespace OdataFtClientConsumer
+namespace FTClientApplication.OdataConsumer
 {
     class ParliamentMemberFilter
     {

@@ -29,18 +29,20 @@ namespace FTClientApplication.View.Dk.Pages
         public ParliamentPage()
         {
             InitializeComponent();
-            Load();
+            FillComboBox();
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
+        //Fill combo box with parliament data from database
+        private void FillComboBox()
         {
-
-            parliament.AddParliament();
+            foreach (var item in parliament.GetParliaments())
+            {
+                parliamentBox.Items.Add(item.startYear);
+            }
         }
-
-        private void Load()
+        private void Load(int selectedYear)
         {
-            var politicians = parliament.GetParliamentWithMembers(1);
+            var politicians = parliament.GetParliamentWithMembers(selectedYear);
             foreach (var politician in politicians)
             {
                 parliamentGrid.Items.Add(politician);
@@ -51,6 +53,12 @@ namespace FTClientApplication.View.Dk.Pages
         {
             EditWindow edit = new EditWindow();
             edit.Show();
+        }
+
+        private void parliamentBox_DropDownClosed(object sender, EventArgs e)
+        {
+            parliamentGrid.Items.Clear();
+            Load((int)parliamentBox.SelectedItem);
         }
     }
 }

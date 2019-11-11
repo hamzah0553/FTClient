@@ -55,6 +55,7 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Security" />
+    <Reference Include="System.Web" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Core" />
@@ -100,7 +101,6 @@
     <Compile Include="Model\MinisterialPost.cs">
       <DependentUpon>EntityModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="Model\OdataModels\ContactInfo.cs" />
     <Compile Include="Model\OdataModels\ExtractedValues.cs" />
     <Compile Include="Model\OdataModels\Odata.cs" />
     <Compile Include="Model\OdataModels\OdataClient.cs" />
@@ -120,6 +120,14 @@
     <Compile Include="Model\sysdiagrams.cs">
       <DependentUpon>EntityModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="OdataConsumer\BiographyReader.cs" />
+    <Compile Include="OdataConsumer\MinisterScraper.cs" />
+    <Compile Include="OdataConsumer\ParliamentMemberFilter.cs" />
+    <Compile Include="Service\MinisterialPostService.cs" />
+    <Compile Include="Service\MinisterService.cs" />
+    <Compile Include="Service\ParliamentMemberService.cs" />
+    <Compile Include="Service\PartyService.cs" />
+    <Compile Include="Service\PoliticianService.cs" />
     <Compile Include="ViewModel\Dk\ParliamentVM.cs" />
     <Compile Include="ViewModel\MainApp.cs" />
     <Compile Include="View\Dk\Crud\EditWindow.xaml.cs">

@@ -1,18 +1,17 @@
 ﻿using System.Linq;
 
-using OdataFtClientConsumer.System;
-using OdataFtClientConsumer.System.Model;
+using FTClientApplication.Model;
 
-namespace OdataFtClientConsumer.Service
+namespace FTClientApplication.Service
 {
     class ParliamentMemberService
     {
-        FTContext db = new FTContext();
+        FTDatabaseEntities db = new FTDatabaseEntities();
         public ParliamentMember GetParliamentMember(int id, int parliamentId)
         {
             ParliamentMember parliamentMember;
-            var result = from pmMember in db.ParliamentMembers
-                         where pmMember.PoliticianId == id && pmMember.ParliamentId == parliamentId
+            var result = from pmMember in db.ParliamentMember
+                         where pmMember.politicianId == id && pmMember.parliamentId == parliamentId
                          select pmMember;
             if (result.Any())
             {
@@ -39,10 +38,10 @@ namespace OdataFtClientConsumer.Service
         }
         public void CreatePM(ParliamentMember pm)
         {
-            if (!CheckPMExist(pm.PoliticianId, pm.ParliamentId))
+            if (!CheckPMExist(pm.politicianId, pm.parliamentId))
             {
-                db.ParliamentMembers.InsertOnSubmit(pm);
-                db.SubmitChanges();
+                db.ParliamentMember.Add(pm);
+                db.SaveChanges();
             }
 
         }

@@ -1,18 +1,18 @@
 ﻿using System.Linq;
 
-using OdataFtClientConsumer.System;
-using OdataFtClientConsumer.System.Model;
+using FTClientApplication.Model;
+using FTClientApplication.Model.OdataModels;
 
-namespace OdataFtClientConsumer.Service
+namespace FTClientApplication.Service
 {
     class PoliticianService
     {
-        FTContext db = new FTContext();
+        FTDatabaseEntities db = new FTDatabaseEntities();
         public Politician GetPolitician(Politician politician)
         {
             Politician newPolitician;
-            var result = from pol in db.Politicians
-                         where pol.Firstname.Equals(politician.Firstname) && pol.Lastname.Equals(politician.Lastname)
+            var result = from pol in db.Politician
+                         where pol.firstname.Equals(politician.firstname) && pol.lastname.Equals(politician.lastname)
                          select pol;
             if (result.Any())
             {
@@ -27,8 +27,8 @@ namespace OdataFtClientConsumer.Service
         public Politician GetPolitician(int id)
         {
             Politician newPolitician;
-            var result = from pol in db.Politicians
-                         where pol.Id == id
+            var result = from pol in db.Politician
+                         where pol.id == id
                          select pol;
             if (result.Any())
             {
@@ -43,8 +43,8 @@ namespace OdataFtClientConsumer.Service
         public Politician GetPolitician(string firstname, string lastname)
         {
             Politician newPolitician;
-            var result = from pol in db.Politicians
-                         where pol.Firstname.Equals(firstname) && pol.Lastname.Equals(lastname)
+            var result = from pol in db.Politician
+                         where pol.firstname.Equals(firstname) && pol.lastname.Equals(lastname)
                          select pol;
             if (result.Any())
             {
@@ -59,7 +59,7 @@ namespace OdataFtClientConsumer.Service
 
         public bool CheckPoliticianExist(Politician politician)
         {
-            var newPol = GetPolitician(politician.Firstname, politician.Lastname);
+            var newPol = GetPolitician(politician.firstname, politician.lastname);
             if (newPol == null)
             {
                 return false;
@@ -69,12 +69,12 @@ namespace OdataFtClientConsumer.Service
                 return true;
             }
         }
-        public void CreateNewPolitician(Politician politician, Contact contact)
+        public void CreateNewPolitician(Politician politician, ContactInfo contact)
         {
             if (!CheckPoliticianExist(politician))
             {
-                db.Politicians.InsertOnSubmit(politician);
-                db.SubmitChanges();
+                db.Politician.Add(politician);
+                db.SaveChanges();
             }
             if (true)
             {
@@ -86,8 +86,8 @@ namespace OdataFtClientConsumer.Service
         {
             if (!CheckPoliticianExist(politician))
             {
-                db.Politicians.InsertOnSubmit(politician);
-                db.SubmitChanges();
+                db.Politician.Add(politician);
+                db.SaveChanges();
             }
             else
             {

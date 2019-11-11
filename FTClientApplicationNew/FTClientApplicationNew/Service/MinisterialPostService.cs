@@ -4,20 +4,19 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-using OdataFtClientConsumer.System;
-using OdataFtClientConsumer.System.Model;
+using FTClientApplication.Model;
 
-namespace OdataFtClientConsumer.Service
+namespace FTClientApplication.Service
 {
     class MinisterialPostService
     {
-        FTContext db = new FTContext();
+        FTDatabaseEntities db = new FTDatabaseEntities();
 
         public MinisterialPost GetMinisterTitle(string title)
         {
             MinisterialPost ministerTitle;
-            var result = from minTitle in db.MinisterTitles
-                         where minTitle.Title.Equals(title)
+            var result = from minTitle in db.MinisterialPost
+                         where minTitle.title.Equals(title)
                          select minTitle;
             if (result.Any())
             {
@@ -33,7 +32,7 @@ namespace OdataFtClientConsumer.Service
 
         public bool CheckIfPartyExist(MinisterialPost ministerTitle)
         {
-            var newParty = GetMinisterTitle(ministerTitle.Title);
+            var newParty = GetMinisterTitle(ministerTitle.title);
             if (newParty == null)
             {
                 return false;
@@ -47,8 +46,8 @@ namespace OdataFtClientConsumer.Service
         {
             if (!CheckIfPartyExist(title))
             {
-                db.MinisterTitles.InsertOnSubmit(title);
-                db.SubmitChanges();
+                db.MinisterialPost.Add(title);
+                db.SaveChanges();
             }
 
         }

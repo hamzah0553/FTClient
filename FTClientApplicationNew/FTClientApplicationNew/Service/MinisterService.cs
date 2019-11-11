@@ -4,20 +4,19 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-using OdataFtClientConsumer.System;
-using OdataFtClientConsumer.System.Model;
+using FTClientApplication.Model;
 
-namespace OdataFtClientConsumer.Service
+namespace FTClientApplication.Service
 {
     class MinisterService
     {
-        FTContext db = new FTContext();
+        FTDatabaseEntities db = new FTDatabaseEntities();
 
         public Minister GetMinister(int id)
         {
             Minister minister;
-            var result = from min in db.Ministers
-                         where min.Id == id
+            var result = from min in db.Minister
+                         where min.id == id
                          select min;
             if (result.Any())
             {
@@ -32,7 +31,7 @@ namespace OdataFtClientConsumer.Service
 
         public bool CheckIfMinisterExist(Minister minister)
         {
-            var newMinister = GetMinister(minister.Id);
+            var newMinister = GetMinister(minister.id);
             if (newMinister == null)
             {
                 return false;
@@ -46,8 +45,8 @@ namespace OdataFtClientConsumer.Service
         {
             if (!CheckIfMinisterExist(minister))
             {
-                db.Ministers.InsertOnSubmit(minister);
-                db.SubmitChanges();
+                db.Minister.Add(minister);
+                db.SaveChanges();
             }
         }
     }

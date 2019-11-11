@@ -9,6 +9,10 @@
       Title="Parliament">
 
     <DockPanel>
+        <UniformGrid DockPanel.Dock="Top" Columns="2" Rows="1" Height="40">
+            <ComboBox Height="25" Width="150" x:Name="parliamentBox" DropDownClosed="parliamentBox_DropDownClosed"></ComboBox>
+            <Button Height="25" Width="150">Add new parliament</Button>
+        </UniformGrid>
         <UniformGrid DockPanel.Dock="Bottom" Columns="3" Rows="1" Height="40">
             <Button Height="25" Width="100" Click="EditMember_Click">Redigere</Button>
             <Button Height="25" Width="100">Tilføj</Button>

@@ -4,11 +4,10 @@ using System.Diagnostics;
 using System.IO;
 using System.Xml;
 using System.Xml.Linq;
+using FTClientApplication.Model;
+using FTClientApplication.Model.OdataModels;
 
-using OdataFtClientConsumer.Model;
-using OdataFtClientConsumer.System.Model;
-
-namespace OdataFtClientConsumer
+namespace FTClientApplication.OdataConsumer
 {
     class BiographyReader
     {
@@ -68,8 +67,8 @@ namespace OdataFtClientConsumer
                 }
             }
             ContactInfo contact = new ContactInfo();
-            contact.Email = email;
-            contact.Phone = phone;
+            contact.email = email;
+            contact.phone = phone;
             CombineToPolitician(firstname, lastname, party, formattedTitle, partyShortname, contact);
         }
 

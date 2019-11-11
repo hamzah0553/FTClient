@@ -7,10 +7,11 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Web;
 
-using OdataFtClientConsumer.Model;
+using FTClientApplication.Model;
+using FTClientApplication.Model.OdataModels;
 using HtmlAgilityPack;
 
-namespace OdataFtClientConsumer
+namespace FTClientApplication.OdataConsumer
 {
     class MinisterScraper
     {
@@ -99,7 +100,7 @@ namespace OdataFtClientConsumer
                     }
                 }
             }
-            contact = new ContactInfo {Phone = phone, Email = email };
+            contact = new ContactInfo {phone = phone, email = email };
             return contact;
         }
         private string GetTitleFromSL(string[] splittedLine)

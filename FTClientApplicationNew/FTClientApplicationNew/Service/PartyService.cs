@@ -1,14 +1,13 @@
 ﻿using System.Diagnostics;
 using System.Linq;
 
-using OdataFtClientConsumer.System;
-using OdataFtClientConsumer.System.Model;
+using FTClientApplication.Model;
 
-namespace OdataFtClientConsumer.Service
+namespace FTClientApplication.Service
 {
     class PartyService
     {
-        FTContext db = new FTContext();
+        FTDatabaseEntities db = new FTDatabaseEntities();
         public PartyService()
         {
             Debug.WriteLine("PartyService is running");
@@ -17,8 +16,8 @@ namespace OdataFtClientConsumer.Service
         public Party GetSpecificParty(string name)
         {
             Party party;
-            var result = from pars in db.Parties
-                          where pars.Name.Equals(name)
+            var result = from pars in db.Party
+                          where pars.name.Equals(name)
                           select pars;
             if (result.Any())
             {
@@ -34,8 +33,8 @@ namespace OdataFtClientConsumer.Service
         {
             Debug.WriteLine("Get party is working");
             Party party;
-            var result = from pars in db.Parties
-                         where pars.Id == id
+            var result = from pars in db.Party
+                         where pars.id == id
                          select pars;
             if (result.Any())
             {
@@ -52,7 +51,7 @@ namespace OdataFtClientConsumer.Service
 
         public bool CheckIfPartyExist(Party party)
         {
-            var newParty = GetSpecificParty(party.Name);
+            var newParty = GetSpecificParty(party.name);
             if (newParty == null)
             {
                 Debug.WriteLine("new Party is not null");
@@ -67,8 +66,8 @@ namespace OdataFtClientConsumer.Service
         {
             if (!CheckIfPartyExist(party))
             {
-                db.Parties.InsertOnSubmit(party);
-                db.SubmitChanges();
+                db.Party.Add(party);
+                db.SaveChanges();
             }
             
         }
