@@ -14,6 +14,8 @@ namespace FTClientApplication.ViewModel.Dk
     {
 
         FTDatabaseEntities entities = new FTDatabaseEntities();
+
+        //Create new parliament
         public void AddParliament()
         {
             Parliament parliament = new Parliament();
@@ -21,21 +23,18 @@ namespace FTClientApplication.ViewModel.Dk
             parliament.startYear = date.Year;
             entities.Parliament.Add(parliament);
             entities.SaveChanges();
+            
         }
 
+        //returns all parliaments
         public List<Parliament> GetParliaments()
         {
             return entities.Parliament.ToList();
         }
 
-        public void EditMember(CustomPolitcian customPolitcian)
+        public List<Party> GetParties()
         {
-            var politcian = entities.Politician.SingleOrDefault(pol => pol.id == customPolitcian.PoliticianId);
-            politcian.firstname = customPolitcian.Firstname;
-            politcian.lastname = customPolitcian.Lastname;
-            var party = entities.Party.SingleOrDefault(par => par.name.Equals(customPolitcian.Party));
-            politcian.partyId = party.id;
-
+            return entities.Party.ToList();
         }
 
         //gets members from specifik parliament
@@ -60,10 +59,54 @@ namespace FTClientApplication.ViewModel.Dk
             return politcians;
 
         }
-    }
+        //Edit function for parliament members
+        public string EditMember(CustomPolitcian politcian)
+        {
+            string msg = "";
+            Politician selectedPolitician = entities.Politician.Where(p => p.id == politcian.PoliticianId).SingleOrDefault();
+            selectedPolitician.firstname = politcian.Firstname;
+            selectedPolitician.lastname = politcian.Lastname;
+            selectedPolitician.partyId = entities.Party.Where(p => p.name.Equals(politcian.Party)).SingleOrDefault().id;
+            selectedPolitician.ContactInfo.SingleOrDefault().phone = politcian.Phone;
+            selectedPolitician.ContactInfo.SingleOrDefault().email = politcian.Email;
+            entities.SaveChanges();
 
+            return msg;
+        }
+        //add parliament member to db onl
+        public bool AddMember(CustomPolitcian politcian)
+        {
+            if (politcian == null)
+            {
+                return false;
+            }
+            else
+            {
+                if (politcian.Firstname == null || politcian.Lastname == null || politcian.Party == null)
+                {
+                    return false;
+                }
+                else
+                {
+                    entities.Politician.Add(new Politician()
+                    {
+                        firstname = politcian.Firstname,
+                        lastname = politcian.Lastname,
+                        partyId = entities.Party.Where(p => p.name.Equals(politcian.Party)).SingleOrDefault().id
+                    });
+                    entities.ContactInfo.Add(new ContactInfo()
+                    {
+                        email = politcian.Email,
+                        phone = politcian.Phone,
+                        politicianId = entities.Politician.Last().id
+                    });
+                    return true;
+                }
+            }
+        }
+    }
     //the displayed data in datagrid view
-    class CustomPolitcian
+    public class CustomPolitcian
     {
         public int PoliticianId { get; set; }
         public int ContactId { get; set; }

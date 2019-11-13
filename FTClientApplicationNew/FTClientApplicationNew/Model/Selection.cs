@@ -12,22 +12,17 @@ namespace FTClientApplication.Model
     using System;
     using System.Collections.ObjectModel;
     
-    public partial class ParliamentMember
+    public partial class Selection
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public ParliamentMember()
+        public Selection()
         {
             this.Selection_member = new ObservableCollection<Selection_member>();
         }
     
         public int id { get; set; }
-        public int politicianId { get; set; }
-        public int parliamentId { get; set; }
-        public Nullable<int> constituencyId { get; set; }
+        public string name { get; set; }
     
-        public virtual Parliament Parliament { get; set; }
-        public virtual Politician Politician { get; set; }
-        public virtual Constituency Constituency { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ObservableCollection<Selection_member> Selection_member { get; set; }
     }

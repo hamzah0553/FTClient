@@ -4,14 +4,21 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="FTDatabaseModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="FTDatabaseModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Constituency">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="name" Type="varchar" MaxLength="200" Nullable="false" />
+        </EntityType>
         <EntityType Name="ContactInfo">
           <Key>
             <PropertyRef Name="id" />
           </Key>
-          <Property Name="id" Type="int" Nullable="false" />
-          <Property Name="phone" Type="varchar" MaxLength="12" />
-          <Property Name="email" Type="varchar" MaxLength="200" />
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="phone" Type="varchar" MaxLength="100" />
+          <Property Name="email" Type="varchar" MaxLength="100" />
           <Property Name="politicianId" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="Government">
@@ -56,6 +63,7 @@
           <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="politicianId" Type="int" Nullable="false" />
           <Property Name="parliamentId" Type="int" Nullable="false" />
+          <Property Name="constituencyId" Type="int" />
         </EntityType>
         <EntityType Name="Party">
           <Key>
@@ -73,6 +81,21 @@
           <Property Name="firstname" Type="varchar" MaxLength="150" Nullable="false" />
           <Property Name="lastname" Type="varchar" MaxLength="150" />
           <Property Name="partyId" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Selection">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" Nullable="false" />
+          <Property Name="name" Type="varchar" MaxLength="200" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Selection_member">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="parliamentMemberId" Type="int" Nullable="false" />
+          <Property Name="selectionId" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="sysdiagrams">
           <Key>
@@ -132,6 +155,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_ParliamentMember_Constituency">
+          <End Role="Constituency" Type="Self.Constituency" Multiplicity="0..1" />
+          <End Role="ParliamentMember" Type="Self.ParliamentMember" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Constituency">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="ParliamentMember">
+              <PropertyRef Name="constituencyId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_ParliamentMember_Parliament">
           <End Role="Parliament" Type="Self.Parliament" Multiplicity="1" />
           <End Role="ParliamentMember" Type="Self.ParliamentMember" Multiplicity="*" />
@@ -168,7 +203,32 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_Selection_member_ParliamentMember">
+          <End Role="ParliamentMember" Type="Self.ParliamentMember" Multiplicity="1" />
+          <End Role="Selection_member" Type="Self.Selection_member" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ParliamentMember">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Selection_member">
+              <PropertyRef Name="parliamentMemberId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Selection_member_Selection">
+          <End Role="Selection" Type="Self.Selection" Multiplicity="1" />
+          <End Role="Selection_member" Type="Self.Selection_member" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Selection">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Selection_member">
+              <PropertyRef Name="selectionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <EntityContainer Name="FTDatabaseModelStoreContainer">
+          <EntitySet Name="Constituency" EntityType="Self.Constituency" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ContactInfo" EntityType="Self.ContactInfo" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Government" EntityType="Self.Government" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Minister" EntityType="Self.Minister" Schema="dbo" store:Type="Tables" />
@@ -177,6 +237,8 @@
           <EntitySet Name="ParliamentMember" EntityType="Self.ParliamentMember" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Party" EntityType="Self.Party" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Politician" EntityType="Self.Politician" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Selection" EntityType="Self.Selection" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Selection_member" EntityType="Self.Selection_member" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
           <AssociationSet Name="FK_ContactInfo_Politician" Association="Self.FK_ContactInfo_Politician">
             <End Role="Politician" EntitySet="Politician" />
@@ -194,6 +256,10 @@
             <End Role="Government" EntitySet="Government" />
             <End Role="MinisterialPost" EntitySet="MinisterialPost" />
           </AssociationSet>
+          <AssociationSet Name="FK_ParliamentMember_Constituency" Association="Self.FK_ParliamentMember_Constituency">
+            <End Role="Constituency" EntitySet="Constituency" />
+            <End Role="ParliamentMember" EntitySet="ParliamentMember" />
+          </AssociationSet>
           <AssociationSet Name="FK_ParliamentMember_Parliament" Association="Self.FK_ParliamentMember_Parliament">
             <End Role="Parliament" EntitySet="Parliament" />
             <End Role="ParliamentMember" EntitySet="ParliamentMember" />
@@ -206,9 +272,16 @@
             <End Role="Party" EntitySet="Party" />
             <End Role="Politician" EntitySet="Politician" />
           </AssociationSet>
+          <AssociationSet Name="FK_Selection_member_ParliamentMember" Association="Self.FK_Selection_member_ParliamentMember">
+            <End Role="ParliamentMember" EntitySet="ParliamentMember" />
+            <End Role="Selection_member" EntitySet="Selection_member" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Selection_member_Selection" Association="Self.FK_Selection_member_Selection">
+            <End Role="Selection" EntitySet="Selection" />
+            <End Role="Selection_member" EntitySet="Selection_member" />
+          </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="FTDatabaseModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -217,8 +290,8 @@
             <PropertyRef Name="id" />
           </Key>
           <Property Name="id" Type="Int32" Nullable="false" />
-          <Property Name="phone" Type="String" MaxLength="12" FixedLength="false" Unicode="false" />
-          <Property Name="email" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="phone" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="email" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
           <Property Name="politicianId" Type="Int32" Nullable="false" />
           <NavigationProperty Name="Politician" Relationship="Self.FK_ContactInfo_Politician" FromRole="ContactInfo" ToRole="Politician" />
         </EntityType>
@@ -272,6 +345,9 @@
           <Property Name="parliamentId" Type="Int32" Nullable="false" />
           <NavigationProperty Name="Parliament" Relationship="Self.FK_ParliamentMember_Parliament" FromRole="ParliamentMember" ToRole="Parliament" />
           <NavigationProperty Name="Politician" Relationship="Self.FK_ParliamentMember_Politician" FromRole="ParliamentMember" ToRole="Politician" />
+          <Property Name="constituencyId" Type="Int32" />
+          <NavigationProperty Name="Constituency" Relationship="FTDatabaseModel.FK_ParliamentMember_Constituency" FromRole="ParliamentMember" ToRole="Constituency" />
+          <NavigationProperty Name="Selection_member" Relationship="FTDatabaseModel.FK_Selection_member_ParliamentMember" FromRole="ParliamentMember" ToRole="Selection_member" />
         </EntityType>
         <EntityType Name="Party">
           <Key>
@@ -427,7 +503,84 @@
             <End Role="Party" EntitySet="Party" />
             <End Role="Politician" EntitySet="Politician" />
           </AssociationSet>
+          <EntitySet Name="Constituency" EntityType="FTDatabaseModel.Constituency" />
+          <EntitySet Name="Selection" EntityType="FTDatabaseModel.Selection" />
+          <EntitySet Name="Selection_member" EntityType="FTDatabaseModel.Selection_member" />
+          <AssociationSet Name="FK_ParliamentMember_Constituency" Association="FTDatabaseModel.FK_ParliamentMember_Constituency">
+            <End Role="Constituency" EntitySet="Constituency" />
+            <End Role="ParliamentMember" EntitySet="ParliamentMember" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Selection_member_ParliamentMember" Association="FTDatabaseModel.FK_Selection_member_ParliamentMember">
+            <End Role="ParliamentMember" EntitySet="ParliamentMember" />
+            <End Role="Selection_member" EntitySet="Selection_member" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Selection_member_Selection" Association="FTDatabaseModel.FK_Selection_member_Selection">
+            <End Role="Selection" EntitySet="Selection" />
+            <End Role="Selection_member" EntitySet="Selection_member" />
+          </AssociationSet>
         </EntityContainer>
+        <EntityType Name="Constituency">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="name" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="ParliamentMember" Relationship="FTDatabaseModel.FK_ParliamentMember_Constituency" FromRole="Constituency" ToRole="ParliamentMember" />
+        </EntityType>
+        <EntityType Name="Selection">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" />
+          <Property Name="name" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Selection_member" Relationship="FTDatabaseModel.FK_Selection_member_Selection" FromRole="Selection" ToRole="Selection_member" />
+        </EntityType>
+        <EntityType Name="Selection_member">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="parliamentMemberId" Type="Int32" Nullable="false" />
+          <Property Name="selectionId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="ParliamentMember" Relationship="FTDatabaseModel.FK_Selection_member_ParliamentMember" FromRole="Selection_member" ToRole="ParliamentMember" />
+          <NavigationProperty Name="Selection" Relationship="FTDatabaseModel.FK_Selection_member_Selection" FromRole="Selection_member" ToRole="Selection" />
+        </EntityType>
+        <Association Name="FK_ParliamentMember_Constituency">
+          <End Type="FTDatabaseModel.Constituency" Role="Constituency" Multiplicity="0..1" />
+          <End Type="FTDatabaseModel.ParliamentMember" Role="ParliamentMember" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Constituency">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="ParliamentMember">
+              <PropertyRef Name="constituencyId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Selection_member_ParliamentMember">
+          <End Type="FTDatabaseModel.ParliamentMember" Role="ParliamentMember" Multiplicity="1" />
+          <End Type="FTDatabaseModel.Selection_member" Role="Selection_member" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ParliamentMember">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Selection_member">
+              <PropertyRef Name="parliamentMemberId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Selection_member_Selection">
+          <End Type="FTDatabaseModel.Selection" Role="Selection" Multiplicity="1" />
+          <End Type="FTDatabaseModel.Selection_member" Role="Selection_member" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Selection">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Selection_member">
+              <PropertyRef Name="selectionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -486,6 +639,7 @@
           <EntitySetMapping Name="ParliamentMember">
             <EntityTypeMapping TypeName="FTDatabaseModel.ParliamentMember">
               <MappingFragment StoreEntitySet="ParliamentMember">
+                <ScalarProperty Name="constituencyId" ColumnName="constituencyId" />
                 <ScalarProperty Name="id" ColumnName="id" />
                 <ScalarProperty Name="politicianId" ColumnName="politicianId" />
                 <ScalarProperty Name="parliamentId" ColumnName="parliamentId" />
@@ -519,6 +673,31 @@
                 <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
                 <ScalarProperty Name="version" ColumnName="version" />
                 <ScalarProperty Name="definition" ColumnName="definition" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Constituency">
+            <EntityTypeMapping TypeName="FTDatabaseModel.Constituency">
+              <MappingFragment StoreEntitySet="Constituency">
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Selection">
+            <EntityTypeMapping TypeName="FTDatabaseModel.Selection">
+              <MappingFragment StoreEntitySet="Selection">
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Selection_member">
+            <EntityTypeMapping TypeName="FTDatabaseModel.Selection_member">
+              <MappingFragment StoreEntitySet="Selection_member">
+                <ScalarProperty Name="selectionId" ColumnName="selectionId" />
+                <ScalarProperty Name="parliamentMemberId" ColumnName="parliamentMemberId" />
+                <ScalarProperty Name="id" ColumnName="id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

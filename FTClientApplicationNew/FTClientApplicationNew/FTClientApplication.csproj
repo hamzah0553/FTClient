@@ -123,6 +123,7 @@
     <Compile Include="OdataConsumer\BiographyReader.cs" />
     <Compile Include="OdataConsumer\MinisterScraper.cs" />
     <Compile Include="OdataConsumer\ParliamentMemberFilter.cs" />
+    <Compile Include="OdataConsumer\SelectionScraper.cs" />
     <Compile Include="Service\MinisterialPostService.cs" />
     <Compile Include="Service\MinisterService.cs" />
     <Compile Include="Service\ParliamentMemberService.cs" />

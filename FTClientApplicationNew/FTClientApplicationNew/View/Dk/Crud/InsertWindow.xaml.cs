@@ -1,4 +1,5 @@
-﻿using System;
+﻿using FTClientApplication.ViewModel.Dk;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -19,9 +20,25 @@ namespace FTClientApplication.View.Dk.Crud
     /// </summary>
     public partial class InsertWindow : Window
     {
+        ParliamentVM parliamentVM = new ParliamentVM();
+        private CustomPolitcian customPolitcian;
         public InsertWindow()
         {
+
             InitializeComponent();
+            FillPartyBox();
+        }
+        private void FillPartyBox()
+        {
+            foreach (var item in parliamentVM.GetParties())
+            {
+                partyBox.Items.Add(item.name);
+            }
+        }
+
+        private void addButton_Click(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }

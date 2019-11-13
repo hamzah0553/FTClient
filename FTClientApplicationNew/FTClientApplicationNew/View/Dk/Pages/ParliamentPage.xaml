@@ -14,11 +14,11 @@
             <Button Height="25" Width="150">Add new parliament</Button>
         </UniformGrid>
         <UniformGrid DockPanel.Dock="Bottom" Columns="3" Rows="1" Height="40">
-            <Button Height="25" Width="100" Click="EditMember_Click">Redigere</Button>
-            <Button Height="25" Width="100">Tilføj</Button>
-            <Button Height="25" Width="100">Slet</Button>
+            <Button x:Name="editBtn" Height="25" Width="100" Click="editBtn_Click">Redigere</Button>
+            <Button x:Name="insertBtn" Height="25" Width="100" Click="insertBtn_Click">Tilføj</Button>
+            <Button x:Name="deleteBtn" Height="25" Width="100" Click="deleteBtn_Click">Slet</Button>
         </UniformGrid>
-        <DataGrid x:Name="parliamentGrid" IsReadOnly="True">
+        <DataGrid x:Name="parliamentGrid" IsReadOnly="True" SelectionChanged="parliamentGrid_SelectionChanged">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Fornavn" Width="*" Binding="{Binding Firstname}"></DataGridTextColumn>
                 <DataGridTextColumn Header="Efternavn" Width="*" Binding="{Binding Lastname}"></DataGridTextColumn>

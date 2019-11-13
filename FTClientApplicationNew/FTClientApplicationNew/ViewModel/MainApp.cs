@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
+using FTClientApplication.OdataConsumer;
 using FTClientApplication.View.Dk;
 
 namespace FTClientApplication.ViewModel
@@ -12,10 +12,12 @@ namespace FTClientApplication.ViewModel
     {
         public void ChangeToMainDKDashBoard(MainWindow window)
         {
+            SelectionScraper selection = new SelectionScraper();
             Dashboard dashboard = new Dashboard();
             App.Current.MainWindow = dashboard;
             window.Close();
             dashboard.Show();
+            selection.GetAllMembers();
             
         }
     }

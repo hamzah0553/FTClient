@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:FTClientApplication.View.Dk.Crud"
         mc:Ignorable="d"
-        Title="EditWindow" Height="500" Width="500">
+        Title="EditWindow" Height="350" Width="350">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition></ColumnDefinition>
@@ -17,26 +17,27 @@
             <RowDefinition></RowDefinition>
             <RowDefinition></RowDefinition>
             <RowDefinition></RowDefinition>
-            <RowDefinition></RowDefinition>
         </Grid.RowDefinitions>
         <Label HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Row="0" Grid.Column="0">Fornavn:</Label>
-        <TextBox Margin="25,0,0,0" Grid.Row="0" Grid.Column="0" Height="25" Width="150"/>
+        <TextBox x:Name="firstname" Margin="25,0,0,0" Grid.Row="0" Grid.Column="0" Height="25" Width="100"/>
 
         <Label HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Row="0" Grid.Column="1">Efternavn:</Label>
-        <TextBox Margin="25,0,0,0" Grid.Row="0" Grid.Column="1" Height="25" Width="150"/>
+        <TextBox x:Name="lastname" Margin="25,0,0,0" Grid.Row="0" Grid.Column="1" Height="25" Width="100"/>
         
         <Label HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Row="1" Grid.Column="0">Parti:</Label>
-        <ComboBox Margin="25,0,0,0" Grid.Row="1" Grid.Column="0" Height="25" Width="150">
-            <ComboBoxItem>Test</ComboBoxItem>
-            <ComboBoxItem>Test</ComboBoxItem>
+        <ComboBox x:Name="partyBox" Margin="25,0,0,0" Grid.Row="1" Grid.Column="0" 
+                  Height="25" Width="100">
+           
         </ComboBox>
 
         <Label HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Row="2" Grid.Column="1">Telefon:</Label>
-        <TextBox Margin="25,0,0,0" Grid.Row="2" Grid.Column="1" Height="25" Width="150"/>
+        <TextBox x:Name="phone" Margin="25,0,0,0" Grid.Row="2" Grid.Column="1" Height="25" Width="100"/>
         
         <Label HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Row="2" Grid.Column="0">Email:</Label>
-        <TextBox Margin="25,0,0,0" Grid.Row="2" Grid.Column="0" Height="25" Width="150"/>
-        <Button Grid.Column="0" Grid.Row="4" Height="25" Width="100">Gem ændringer</Button>
+        <TextBox x:Name="email" Margin="25,0,0,0" Grid.Row="2" Grid.Column="0" Height="25" Width="100"/>
+        
+        <Button Grid.Column="0" Grid.Row="4" Height="25" Width="100" 
+                x:Name="editButton" Click="editButton_Click">Gem ændringer</Button>
         <Button Grid.Column="1" Grid.Row="4" Height="25" Width="100">Fortryd</Button>
 
 

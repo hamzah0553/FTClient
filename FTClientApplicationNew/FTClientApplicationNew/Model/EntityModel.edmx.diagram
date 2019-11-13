@@ -7,10 +7,10 @@
       <Diagram DiagramId="7ab6ecc3fba742ca9854eee2e4dcfe08" Name="Diagram1">
         <EntityTypeShape EntityType="FTDatabaseModel.ContactInfo" Width="1.5" PointX="5.25" PointY="4.75" IsExpanded="true" />
         <EntityTypeShape EntityType="FTDatabaseModel.Government" Width="1.5" PointX="0.75" PointY="1.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="FTDatabaseModel.Minister" Width="1.5" PointX="5.25" PointY="1.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="FTDatabaseModel.Minister" Width="1.5" PointX="5.125" PointY="1.5" IsExpanded="true" />
         <EntityTypeShape EntityType="FTDatabaseModel.MinisterialPost" Width="1.5" PointX="3" PointY="0.75" IsExpanded="true" />
         <EntityTypeShape EntityType="FTDatabaseModel.Parliament" Width="1.5" PointX="3" PointY="7.875" IsExpanded="true" />
-        <EntityTypeShape EntityType="FTDatabaseModel.ParliamentMember" Width="1.5" PointX="5.25" PointY="7.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="FTDatabaseModel.ParliamentMember" Width="1.5" PointX="5" PointY="7.75" IsExpanded="true" />
         <EntityTypeShape EntityType="FTDatabaseModel.Party" Width="1.5" PointX="0.75" PointY="4.875" IsExpanded="true" />
         <EntityTypeShape EntityType="FTDatabaseModel.Politician" Width="1.5" PointX="3" PointY="4.5" IsExpanded="true" />
         <EntityTypeShape EntityType="FTDatabaseModel.sysdiagrams" Width="1.5" PointX="7.75" PointY="1.375" IsExpanded="true" />
@@ -21,6 +21,12 @@
         <AssociationConnector Association="FTDatabaseModel.FK_ParliamentMember_Parliament" ManuallyRouted="false" />
         <AssociationConnector Association="FTDatabaseModel.FK_ParliamentMember_Politician" ManuallyRouted="false" />
         <AssociationConnector Association="FTDatabaseModel.FK_Politician_Party" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="FTDatabaseModel.Constituency" Width="1.5" PointX="2.75" PointY="11.25" />
+        <EntityTypeShape EntityType="FTDatabaseModel.Selection" Width="1.5" PointX="5" PointY="11.25" />
+        <EntityTypeShape EntityType="FTDatabaseModel.Selection_member" Width="1.5" PointX="7.25" PointY="8" />
+        <AssociationConnector Association="FTDatabaseModel.FK_ParliamentMember_Constituency" />
+        <AssociationConnector Association="FTDatabaseModel.FK_Selection_member_ParliamentMember" />
+        <AssociationConnector Association="FTDatabaseModel.FK_Selection_member_Selection" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

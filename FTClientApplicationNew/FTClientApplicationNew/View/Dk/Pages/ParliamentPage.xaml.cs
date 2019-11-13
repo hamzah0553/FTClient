@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -25,10 +27,14 @@ namespace FTClientApplication.View.Dk.Pages
     /// </summary>
     public partial class ParliamentPage : Page
     {
+        int currentYear = 0;
         ParliamentVM parliament = new ParliamentVM();
         public ParliamentPage()
         {
             InitializeComponent();
+            editBtn.IsEnabled = false;
+            insertBtn.IsEnabled = false;
+            deleteBtn.IsEnabled = false;
             FillComboBox();
         }
 
@@ -40,25 +46,68 @@ namespace FTClientApplication.View.Dk.Pages
                 parliamentBox.Items.Add(item.startYear);
             }
         }
+        //load the members to the datagrid
         private void Load(int selectedYear)
         {
+            parliament = null;
+            parliament = new ParliamentVM();
             var politicians = parliament.GetParliamentWithMembers(selectedYear);
             foreach (var politician in politicians)
             {
-                parliamentGrid.Items.Add(politician);
+                if (politician != null)
+                {
+                    parliamentGrid.Items.Add(politician);
+                    insertBtn.IsEnabled = true;
+                }
             }
         }
 
-        private void EditMember_Click(object sender, RoutedEventArgs e)
+        private void RefreshParliamentGrid()
         {
-            EditWindow edit = new EditWindow();
-            edit.Show();
+            parliamentGrid.Items.Clear();
+            Load(currentYear);
+        }
+
+        //Events
+
+        private void Edit_Unloaded(object sender, RoutedEventArgs e)
+        {
+            RefreshParliamentGrid();
         }
 
         private void parliamentBox_DropDownClosed(object sender, EventArgs e)
         {
             parliamentGrid.Items.Clear();
-            Load((int)parliamentBox.SelectedItem);
+            editBtn.IsEnabled = false;
+            deleteBtn.IsEnabled = false;
+            currentYear = (int)parliamentBox.SelectedItem;
+            Load(currentYear);
+        }
+
+        private void parliamentGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            editBtn.IsEnabled = true;
+            deleteBtn.IsEnabled = true;
+        }
+
+        private void insertBtn_Click(object sender, RoutedEventArgs e)
+        {
+            CustomPolitcian politcian = parliamentGrid.SelectedItem as CustomPolitcian;
+            InsertWindow insertWindow = new InsertWindow();
+            insertWindow.Show();
+        }
+
+        private void deleteBtn_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+        private void editBtn_Click(object sender, RoutedEventArgs e)
+        {
+            CustomPolitcian politcian = parliamentGrid.SelectedItem as CustomPolitcian;
+            EditWindow edit = new EditWindow(politcian);
+
+            edit.Show();
+            edit.Unloaded += Edit_Unloaded; ;
         }
     }
 }
