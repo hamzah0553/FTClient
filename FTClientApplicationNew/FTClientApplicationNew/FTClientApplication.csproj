@@ -150,6 +150,9 @@
     <Compile Include="View\Dk\Dashboard.xaml.cs">
       <DependentUpon>Dashboard.xaml</DependentUpon>
     </Compile>
+    <Compile Include="View\Dk\Pages\GovernmentPage.xaml.cs">
+      <DependentUpon>GovernmentPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\Dk\Pages\HomePage.xaml.cs">
       <DependentUpon>HomePage.xaml</DependentUpon>
     </Compile>
@@ -182,6 +185,10 @@
     <Page Include="View\Dk\Dashboard.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\Dk\Pages\GovernmentPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\Dk\Pages\HomePage.xaml">
       <Generator>MSBuild:Compile</Generator>

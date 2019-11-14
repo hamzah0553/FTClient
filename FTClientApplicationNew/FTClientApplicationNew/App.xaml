@@ -4,6 +4,8 @@
              xmlns:local="clr-namespace:FTClientApplication"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
-         
+        <Style x:Key="ColumnElementStyle" TargetType="TextBlock">
+            <Setter Property="Margin" Value="10, 5, 10, 5"></Setter>
+        </Style>
     </Application.Resources>
 </Application>
