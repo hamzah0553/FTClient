@@ -21,10 +21,10 @@
         </UniformGrid>
         <DataGrid x:Name="selectionGrid" IsReadOnly="True" SelectionChanged="selectionGrid_SelectionChanged">
             <DataGrid.Columns>
-                <DataGridTextColumn Header="Fornavn" Width="*" Binding="{Binding Firstname}"></DataGridTextColumn>
-                <DataGridTextColumn Header="Efternavn" Width="*" Binding="{Binding Lastname}"></DataGridTextColumn>
-                <DataGridTextColumn Header="Parti" Width="*" Binding="{Binding Party}"></DataGridTextColumn>
-                <DataGridTextColumn Header="Udvalg" Width="*" Binding="{Binding Selection}"></DataGridTextColumn>
+                <DataGridTextColumn ElementStyle="{StaticResource ColumnElementStyle}" Header="Fornavn" Width="*" Binding="{Binding Firstname}"></DataGridTextColumn>
+                <DataGridTextColumn ElementStyle="{StaticResource ColumnElementStyle}" Header="Efternavn" Width="*" Binding="{Binding Lastname}"></DataGridTextColumn>
+                <DataGridTextColumn ElementStyle="{StaticResource ColumnElementStyle}" Header="Parti" Width="*" Binding="{Binding Party}"></DataGridTextColumn>
+                <DataGridTextColumn ElementStyle="{StaticResource ColumnElementStyle}" Header="Udvalg" Width="*" Binding="{Binding Selection}"></DataGridTextColumn>
             </DataGrid.Columns>
         </DataGrid>
     </DockPanel>

@@ -39,7 +39,6 @@ namespace FTClientApplication.ViewModel.Dk
                     Party = item.ParliamentMember.Politician.Party.name,
                     Selection = selectionName
                 };
-                Debug.WriteLine(customSelectionMember.Firstname + " " + customSelectionMember.Lastname);
                 members.Add(customSelectionMember);
             }
             return members;

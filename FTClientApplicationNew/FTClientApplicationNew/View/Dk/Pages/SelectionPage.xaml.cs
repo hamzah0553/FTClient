@@ -26,7 +26,7 @@ namespace FTClientApplication.View.Dk.Pages
         public SelectionPage()
         {
             InitializeComponent();
-            parliamentBox.SelectedItem = 1;
+            parliamentBox.SelectedIndex = 0;
             FillComboBoxes();
         }
 
