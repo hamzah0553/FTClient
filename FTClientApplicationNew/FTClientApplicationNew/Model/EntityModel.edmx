@@ -30,6 +30,14 @@
           <Property Name="endDate" Type="date" />
           <Property Name="partiesInThisGov" Type="varchar" MaxLength="10" />
         </EntityType>
+        <EntityType Name="Mayor">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="politicianId" Type="int" Nullable="false" />
+          <Property Name="municipalityId" Type="int" Nullable="false" />
+        </EntityType>
         <EntityType Name="Minister">
           <Key>
             <PropertyRef Name="id" />
@@ -47,6 +55,13 @@
           <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="title" Type="varchar" MaxLength="255" Nullable="false" />
           <Property Name="governmentId" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Municipality">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="name" Type="varchar" MaxLength="200" Nullable="false" />
         </EntityType>
         <EntityType Name="Parliament">
           <Key>
@@ -82,6 +97,14 @@
           <Property Name="lastname" Type="varchar" MaxLength="150" />
           <Property Name="partyId" Type="int" Nullable="false" />
         </EntityType>
+        <EntityType Name="Region">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="name" Type="varchar" MaxLength="200" Nullable="false" />
+          <Property Name="municipalityId" Type="int" Nullable="false" />
+        </EntityType>
         <EntityType Name="Selection">
           <Key>
             <PropertyRef Name="id" />
@@ -115,6 +138,30 @@
               <PropertyRef Name="id" />
             </Principal>
             <Dependent Role="ContactInfo">
+              <PropertyRef Name="politicianId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Mayor_Municipality">
+          <End Role="Municipality" Type="Self.Municipality" Multiplicity="1" />
+          <End Role="Mayor" Type="Self.Mayor" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Municipality">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Mayor">
+              <PropertyRef Name="municipalityId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Mayor_Politician">
+          <End Role="Politician" Type="Self.Politician" Multiplicity="1" />
+          <End Role="Mayor" Type="Self.Mayor" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Politician">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Mayor">
               <PropertyRef Name="politicianId" />
             </Dependent>
           </ReferentialConstraint>
@@ -203,6 +250,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_Region_Municipality">
+          <End Role="Municipality" Type="Self.Municipality" Multiplicity="1" />
+          <End Role="Region" Type="Self.Region" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Municipality">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Region">
+              <PropertyRef Name="municipalityId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_Selection_member_ParliamentMember">
           <End Role="ParliamentMember" Type="Self.ParliamentMember" Multiplicity="1" />
           <End Role="Selection_member" Type="Self.Selection_member" Multiplicity="*" />
@@ -231,18 +290,29 @@
           <EntitySet Name="Constituency" EntityType="Self.Constituency" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ContactInfo" EntityType="Self.ContactInfo" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Government" EntityType="Self.Government" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Mayor" EntityType="Self.Mayor" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Minister" EntityType="Self.Minister" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="MinisterialPost" EntityType="Self.MinisterialPost" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Municipality" EntityType="Self.Municipality" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Parliament" EntityType="Self.Parliament" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ParliamentMember" EntityType="Self.ParliamentMember" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Party" EntityType="Self.Party" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Politician" EntityType="Self.Politician" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Region" EntityType="Self.Region" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Selection" EntityType="Self.Selection" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Selection_member" EntityType="Self.Selection_member" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
           <AssociationSet Name="FK_ContactInfo_Politician" Association="Self.FK_ContactInfo_Politician">
             <End Role="Politician" EntitySet="Politician" />
             <End Role="ContactInfo" EntitySet="ContactInfo" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Mayor_Municipality" Association="Self.FK_Mayor_Municipality">
+            <End Role="Municipality" EntitySet="Municipality" />
+            <End Role="Mayor" EntitySet="Mayor" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Mayor_Politician" Association="Self.FK_Mayor_Politician">
+            <End Role="Politician" EntitySet="Politician" />
+            <End Role="Mayor" EntitySet="Mayor" />
           </AssociationSet>
           <AssociationSet Name="FK_Minister_MinisterialPost" Association="Self.FK_Minister_MinisterialPost">
             <End Role="MinisterialPost" EntitySet="MinisterialPost" />
@@ -271,6 +341,10 @@
           <AssociationSet Name="FK_Politician_Party" Association="Self.FK_Politician_Party">
             <End Role="Party" EntitySet="Party" />
             <End Role="Politician" EntitySet="Politician" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Region_Municipality" Association="Self.FK_Region_Municipality">
+            <End Role="Municipality" EntitySet="Municipality" />
+            <End Role="Region" EntitySet="Region" />
           </AssociationSet>
           <AssociationSet Name="FK_Selection_member_ParliamentMember" Association="Self.FK_Selection_member_ParliamentMember">
             <End Role="ParliamentMember" EntitySet="ParliamentMember" />
@@ -370,6 +444,7 @@
           <NavigationProperty Name="Minister" Relationship="Self.FK_Minister_Politician" FromRole="Politician" ToRole="Minister" />
           <NavigationProperty Name="ParliamentMember" Relationship="Self.FK_ParliamentMember_Politician" FromRole="Politician" ToRole="ParliamentMember" />
           <NavigationProperty Name="Party" Relationship="Self.FK_Politician_Party" FromRole="Politician" ToRole="Party" />
+          <NavigationProperty Name="Mayor" Relationship="FTDatabaseModel.FK_Mayor_Politician" FromRole="Politician" ToRole="Mayor" />
         </EntityType>
         <EntityType Name="sysdiagrams">
           <Key>
@@ -518,6 +593,21 @@
             <End Role="Selection" EntitySet="Selection" />
             <End Role="Selection_member" EntitySet="Selection_member" />
           </AssociationSet>
+          <EntitySet Name="Mayor" EntityType="FTDatabaseModel.Mayor" />
+          <EntitySet Name="Municipality" EntityType="FTDatabaseModel.Municipality" />
+          <EntitySet Name="Region" EntityType="FTDatabaseModel.Region" />
+          <AssociationSet Name="FK_Mayor_Municipality" Association="FTDatabaseModel.FK_Mayor_Municipality">
+            <End Role="Municipality" EntitySet="Municipality" />
+            <End Role="Mayor" EntitySet="Mayor" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Mayor_Politician" Association="FTDatabaseModel.FK_Mayor_Politician">
+            <End Role="Politician" EntitySet="Politician" />
+            <End Role="Mayor" EntitySet="Mayor" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Region_Municipality" Association="FTDatabaseModel.FK_Region_Municipality">
+            <End Role="Municipality" EntitySet="Municipality" />
+            <End Role="Region" EntitySet="Region" />
+          </AssociationSet>
         </EntityContainer>
         <EntityType Name="Constituency">
           <Key>
@@ -578,6 +668,70 @@
             </Principal>
             <Dependent Role="Selection_member">
               <PropertyRef Name="selectionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="Mayor">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="politicianId" Type="Int32" Nullable="false" />
+          <Property Name="municipalityId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Municipality" Relationship="FTDatabaseModel.FK_Mayor_Municipality" FromRole="Mayor" ToRole="Municipality" />
+          <NavigationProperty Name="Politician" Relationship="FTDatabaseModel.FK_Mayor_Politician" FromRole="Mayor" ToRole="Politician" />
+        </EntityType>
+        <EntityType Name="Municipality">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="name" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Mayor" Relationship="FTDatabaseModel.FK_Mayor_Municipality" FromRole="Municipality" ToRole="Mayor" />
+          <NavigationProperty Name="Region" Relationship="FTDatabaseModel.FK_Region_Municipality" FromRole="Municipality" ToRole="Region" />
+        </EntityType>
+        <EntityType Name="Region">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="name" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="municipalityId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Municipality" Relationship="FTDatabaseModel.FK_Region_Municipality" FromRole="Region" ToRole="Municipality" />
+        </EntityType>
+        <Association Name="FK_Mayor_Municipality">
+          <End Type="FTDatabaseModel.Municipality" Role="Municipality" Multiplicity="1" />
+          <End Type="FTDatabaseModel.Mayor" Role="Mayor" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Municipality">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Mayor">
+              <PropertyRef Name="municipalityId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Mayor_Politician">
+          <End Type="FTDatabaseModel.Politician" Role="Politician" Multiplicity="1" />
+          <End Type="FTDatabaseModel.Mayor" Role="Mayor" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Politician">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Mayor">
+              <PropertyRef Name="politicianId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Region_Municipality">
+          <End Type="FTDatabaseModel.Municipality" Role="Municipality" Multiplicity="1" />
+          <End Type="FTDatabaseModel.Region" Role="Region" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Municipality">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Region">
+              <PropertyRef Name="municipalityId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -697,6 +851,32 @@
               <MappingFragment StoreEntitySet="Selection_member">
                 <ScalarProperty Name="selectionId" ColumnName="selectionId" />
                 <ScalarProperty Name="parliamentMemberId" ColumnName="parliamentMemberId" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Mayor">
+            <EntityTypeMapping TypeName="FTDatabaseModel.Mayor">
+              <MappingFragment StoreEntitySet="Mayor">
+                <ScalarProperty Name="municipalityId" ColumnName="municipalityId" />
+                <ScalarProperty Name="politicianId" ColumnName="politicianId" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Municipality">
+            <EntityTypeMapping TypeName="FTDatabaseModel.Municipality">
+              <MappingFragment StoreEntitySet="Municipality">
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Region">
+            <EntityTypeMapping TypeName="FTDatabaseModel.Region">
+              <MappingFragment StoreEntitySet="Region">
+                <ScalarProperty Name="municipalityId" ColumnName="municipalityId" />
+                <ScalarProperty Name="name" ColumnName="name" />
                 <ScalarProperty Name="id" ColumnName="id" />
               </MappingFragment>
             </EntityTypeMapping>

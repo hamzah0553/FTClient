@@ -7,9 +7,10 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Web;
 
+using HtmlAgilityPack;
 using FTClientApplication.Model;
 using FTClientApplication.Model.OdataModels;
-using HtmlAgilityPack;
+using FTClientApplication.ViewModel;
 
 namespace FTClientApplication.OdataConsumer
 {

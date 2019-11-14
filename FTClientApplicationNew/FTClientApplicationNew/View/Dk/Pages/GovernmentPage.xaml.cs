@@ -29,5 +29,25 @@ namespace FTClientApplication.View.Dk.Pages
         {
 
         }
+
+        private void editBtn_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void insertBtn_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void deleteBtn_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void governmentGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+
+        }
     }
 }

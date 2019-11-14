@@ -98,10 +98,16 @@
     <Compile Include="Model\Government.cs">
       <DependentUpon>EntityModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Model\Mayor.cs">
+      <DependentUpon>EntityModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Model\Minister.cs">
       <DependentUpon>EntityModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\MinisterialPost.cs">
+      <DependentUpon>EntityModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\Municipality.cs">
       <DependentUpon>EntityModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\OdataModels\ExtractedValues.cs" />
@@ -118,6 +124,9 @@
       <DependentUpon>EntityModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\Politician.cs">
+      <DependentUpon>EntityModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model\Region.cs">
       <DependentUpon>EntityModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Model\Selection.cs">
@@ -138,6 +147,7 @@
     <Compile Include="Service\ParliamentMemberService.cs" />
     <Compile Include="Service\PartyService.cs" />
     <Compile Include="Service\PoliticianService.cs" />
+    <Compile Include="ViewModel\Dk\GovernmentVM.cs" />
     <Compile Include="ViewModel\Dk\ParliamentVM.cs" />
     <Compile Include="ViewModel\MainApp.cs" />
     <Compile Include="ViewModel\Dk\SelectionVM.cs" />

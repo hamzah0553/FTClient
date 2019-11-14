@@ -9,9 +9,8 @@
       Title="GovernmentPage">
 
     <DockPanel>
-        <UniformGrid DockPanel.Dock="Top" Columns="3" Rows="1" Height="40">
-            <ComboBox Height="25" Width="150" x:Name="selectionBox" DropDownClosed="selectionBox_DropDownClosed"></ComboBox>
-            <ComboBox Height="25" Width="150" x:Name="parliamentBox" DropDownClosed="parliamentBox_DropDownClosed"></ComboBox>
+        <UniformGrid DockPanel.Dock="Top" Columns="2" Rows="1" Height="40">
+            <ComboBox Height="25" Width="150" x:Name="governmentBox" DropDownClosed="governmentBox_DropDownClosed"></ComboBox>
             <Button Height="25" Width="150">Add new selections</Button>
         </UniformGrid>
         <UniformGrid DockPanel.Dock="Bottom" Columns="3" Rows="1" Height="40">
@@ -19,12 +18,14 @@
             <Button x:Name="insertBtn" Height="25" Width="100" Click="insertBtn_Click">Tilføj</Button>
             <Button x:Name="deleteBtn" Height="25" Width="100" Click="deleteBtn_Click">Slet</Button>
         </UniformGrid>
-        <DataGrid x:Name="selectionGrid" IsReadOnly="True" SelectionChanged="selectionGrid_SelectionChanged">
+        <DataGrid x:Name="governmentGrid" IsReadOnly="True" SelectionChanged="governmentGrid_SelectionChanged">
             <DataGrid.Columns>
                 <DataGridTextColumn ElementStyle="{StaticResource ColumnElementStyle}" Header="Titel" Width="*" Binding="{Binding Title}"></DataGridTextColumn>
                 <DataGridTextColumn ElementStyle="{StaticResource ColumnElementStyle}" Header="Fornavn" Width="*" Binding="{Binding Firstname}"></DataGridTextColumn>
-                <DataGridTextColumn ElementStyle="{StaticResource ColumnElementStyle}" Header="Lastname" Width="*" Binding="{Binding Party}"></DataGridTextColumn>
-                <DataGridTextColumn ElementStyle="{StaticResource ColumnElementStyle}" Header="Parti" Width="*" Binding="{Binding Selection}"></DataGridTextColumn>
+                <DataGridTextColumn ElementStyle="{StaticResource ColumnElementStyle}" Header="Lastname" Width="*" Binding="{Binding Lastname}"></DataGridTextColumn>
+                <DataGridTextColumn ElementStyle="{StaticResource ColumnElementStyle}" Header="Parti" Width="*" Binding="{Binding Party}"></DataGridTextColumn>
+                <DataGridTextColumn ElementStyle="{StaticResource ColumnElementStyle}" Header="Telefon" Width="*" Binding="{Binding Phone}"></DataGridTextColumn>
+                <DataGridTextColumn ElementStyle="{StaticResource ColumnElementStyle}" Header="Email" Width="*" Binding="{Binding Email}"></DataGridTextColumn>
             </DataGrid.Columns>
         </DataGrid>
     </DockPanel>
