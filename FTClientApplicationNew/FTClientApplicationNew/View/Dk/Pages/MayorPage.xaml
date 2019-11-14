@@ -1,0 +1,33 @@
+﻿<Page x:Class="FTClientApplication.View.Dk.Pages.MayorPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:FTClientApplication.View.Dk.Pages"
+      mc:Ignorable="d" 
+      d:DesignHeight="450" d:DesignWidth="800"
+      Title="Mayor">
+
+    <DockPanel>
+        <UniformGrid DockPanel.Dock="Top" Columns="2" Rows="1" Height="40">
+            <ComboBox Height="25" Width="150" x:Name="parliamentBox" DropDownClosed="parliamentBox_DropDownClosed"></ComboBox>
+            <Button Height="25" Width="150">Add new borgmester</Button>
+        </UniformGrid>
+        <UniformGrid DockPanel.Dock="Bottom" Columns="3" Rows="1" Height="40">
+            <Button x:Name="editBtn" Height="25" Width="100" Click="editBtn_Click">Redigere</Button>
+            <Button x:Name="insertBtn" Height="25" Width="100" Click="insertBtn_Click">Tilføj</Button>
+            <Button x:Name="deleteBtn" Height="25" Width="100" Click="deleteBtn_Click">Slet</Button>
+        </UniformGrid>
+        <DataGrid x:Name="parliamentGrid" IsReadOnly="True" SelectionChanged="parliamentGrid_SelectionChanged">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Region" Width="*" Binding="{Binding Region}"></DataGridTextColumn>
+                <DataGridTextColumn Header="Kommune" Width="*" Binding="{Binding Kommune}"></DataGridTextColumn>
+                <DataGridTextColumn Header="Borgmester" Width="*" Binding="{Binding Borgmester}"></DataGridTextColumn>
+                <DataGridTextColumn Header="Parti" Width="*" Binding="{Binding Parti}"></DataGridTextColumn>
+                <DataGridTextColumn Header="Telefon" Width="*" Binding="{Binding Telefon}"></DataGridTextColumn>
+                <DataGridTextColumn Header="Email" Width="*" Binding="{Binding Email}"></DataGridTextColumn>
+                <DataGridTextColumn Header="Farve" Width="*" Binding="{Binding Farve}"></DataGridTextColumn>
+            </DataGrid.Columns>
+        </DataGrid>
+    </DockPanel>
+</Page>
