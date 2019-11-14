@@ -12,12 +12,12 @@ namespace FTClientApplication.ViewModel
     {
         public void ChangeToMainDKDashBoard(MainWindow window)
         {
-            SelectionScraper selection = new SelectionScraper();
+            //SelectionScraper selection = new SelectionScraper(1);
+            //selection.GetAllMembers();
             Dashboard dashboard = new Dashboard();
             App.Current.MainWindow = dashboard;
             window.Close();
             dashboard.Show();
-            selection.GetAllMembers();
             
         }
     }

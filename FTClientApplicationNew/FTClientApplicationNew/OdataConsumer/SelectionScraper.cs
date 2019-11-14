@@ -15,12 +15,14 @@ namespace FTClientApplication.OdataConsumer
 {
     public class SelectionScraper
     {
+        int parliamentId;
         HtmlWeb web = new HtmlWeb();
         List<UrlItem> urlList = new List<UrlItem>();
         List<HtmlDocument> documents = new List<HtmlDocument>();
 
-        public SelectionScraper()
+        public SelectionScraper(int parliamentId)
         {
+            this.parliamentId = parliamentId;
             urlList.Add(new UrlItem("https://www.ft.dk/da/udvalg/udvalgene/beu/medlemsoversigt", 1));
             urlList.Add(new UrlItem("https://www.ft.dk/da/udvalg/udvalgene/eru/medlemsoversigt", 2));
             urlList.Add(new UrlItem("https://www.ft.dk/da/udvalg/udvalgene/fiu/medlemsoversigt", 4));
@@ -40,20 +42,18 @@ namespace FTClientApplication.OdataConsumer
             List<Thread> listOfThreads = new List<Thread>();
             for (int i = 0; i < documents.Count; i++)
             {
-                //Thread thread = new Thread(GetSelectionMembers);
-                //thread.Start(i);
-                //listOfThreads.Add(thread);
+                Thread thread = new Thread(CreateSelectionMembers);
+                thread.Start(new ThreadData(urlList[i].SelectionIndex, i));
+                listOfThreads.Add(thread);
             }
-            Thread thread = new Thread(CreateSelectionMembers);
-
-            thread.Start(0);
         }
 
         private void CreateSelectionMembers(Object data)
         {
+            ThreadData indexes = (ThreadData)data;
             string pattern = "^\\d+$";
             bool shouldInclude = true;
-            var tdList = documents[(int)data].DocumentNode.SelectNodes("//td");
+            var tdList = documents[indexes.Index].DocumentNode.SelectNodes("//td");
             foreach (var node in tdList)
             {
                 var value = RemoveExcessWhiteSpace(node.InnerText);
@@ -65,6 +65,29 @@ namespace FTClientApplication.OdataConsumer
                         {
                             string[] fullname = SplitName(value);
                             //Debug.WriteLine(fullname[0] + " " + fullname[1]);
+                            string firstname = fullname[0];
+                            string lastname = fullname[1];
+                            Selection_member selection_Member = new Selection_member();
+                            //saving the retrieved data to db
+                            using (var context = new FTDatabaseEntities())
+                            {
+                                if (context.Politician.Where(p => p.firstname.Equals(firstname) && p.lastname.Equals(lastname)).Any())
+                                {
+
+
+                                    Debug.WriteLine(firstname + " " + lastname + " " + indexes.SelectionIndex);
+                                    selection_Member.parliamentMemberId =
+                                        context.ParliamentMember.Where(p => p.Politician.firstname.Equals(firstname) &&
+                                        p.Politician.lastname.Equals(lastname) && p.Parliament.id == parliamentId).Single().id;
+                                    selection_Member.selectionId = indexes.SelectionIndex;
+                                    if (!SelectionMemberExist(selection_Member, context))
+                                    {
+                                        context.Selection_member.Add(selection_Member);
+
+                                    }
+                                    context.SaveChanges();
+                                }
+                            }
                             shouldInclude = false;
                         }
                         else
@@ -75,6 +98,14 @@ namespace FTClientApplication.OdataConsumer
                 }
             }
         }
+        private bool SelectionMemberExist(Selection_member member, FTDatabaseEntities context)
+        {
+            if (context.Selection_member.Where(s => s.selectionId == member.selectionId && s.parliamentMemberId == member.parliamentMemberId).Any())
+            {
+                return true;
+            }
+            else { return false; }
+        }
         private string[] SplitName(string value)
         {
             string[] splittedName = value.Split(' ');
@@ -84,9 +115,16 @@ namespace FTClientApplication.OdataConsumer
             {
                 if (splittedName.Length > 2)
                 {
-                    if (splittedName.Length > i)
+                    if (splittedName.Length-1 > i)
                     {
-                        firstname = splittedName[i];
+                        if (firstname.Equals(""))
+                        {
+                            firstname = firstname + splittedName[i];
+                        }
+                        else
+                        {
+                            firstname = firstname + " " + splittedName[i];
+                        }
                     }
                     lastname = splittedName[splittedName.Length-1];
                 }
@@ -96,7 +134,6 @@ namespace FTClientApplication.OdataConsumer
                     lastname = splittedName[1];
                 }
             }
-            Debug.WriteLine(firstname + " " + lastname);
             return new string[] { firstname, lastname };
         }
         private string RemoveExcessWhiteSpace(string value)
@@ -119,6 +156,18 @@ namespace FTClientApplication.OdataConsumer
         public string Url { get; set; }
         public int SelectionIndex { get; set; }
        
+    }
+
+    public class ThreadData
+    {
+        public ThreadData(int selectionIndex, int index)
+        {
+            Index = index;
+            SelectionIndex = selectionIndex;
+        }
+        public int SelectionIndex { get; set; }
+        public int Index { get; set; }
+
     }
 
 }

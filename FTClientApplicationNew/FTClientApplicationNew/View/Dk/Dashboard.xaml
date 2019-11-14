@@ -12,9 +12,9 @@
             <UniformGrid Width="100" Columns="1" DockPanel.Dock="Left">
                 <Button Click="HomeButtonClick">Home</Button>
                 <Button Click="ParliamentButtonClick">Folketinget</Button>
+                <Button x:Name="selectionBtn" Click="selectionBtn_Click">Udvalg</Button>
                 <Button>Regeringen</Button>
                 <Button>Borgmestre</Button>
-                <Button></Button>
             </UniformGrid>
             <Frame x:Name="_frame" Source="Pages/HomePage.xaml" NavigationUIVisibility="Hidden"></Frame>
         </DockPanel>

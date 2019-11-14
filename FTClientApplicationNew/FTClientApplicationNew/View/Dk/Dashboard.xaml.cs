@@ -36,5 +36,10 @@ namespace FTClientApplication.View.Dk
         {
             _frame.Navigate(new HomePage());
         }
+
+        private void selectionBtn_Click(object sender, RoutedEventArgs e)
+        {
+            _frame.Navigate(new SelectionPage());
+        }
     }
 }

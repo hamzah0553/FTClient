@@ -1,0 +1,31 @@
+﻿<Page x:Class="FTClientApplication.View.Dk.Pages.SelectionPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:FTClientApplication.View.Dk.Pages"
+      mc:Ignorable="d" 
+      d:DesignHeight="450" d:DesignWidth="800"
+      Title="SelectionPage">
+
+    <DockPanel>
+        <UniformGrid DockPanel.Dock="Top" Columns="3" Rows="1" Height="40">
+            <ComboBox Height="25" Width="150" x:Name="selectionBox" DropDownClosed="selectionBox_DropDownClosed"></ComboBox>
+            <ComboBox Height="25" Width="150" x:Name="parliamentBox" DropDownClosed="parliamentBox_DropDownClosed"></ComboBox>
+            <Button Height="25" Width="150">Add new selections</Button>
+        </UniformGrid>
+        <UniformGrid DockPanel.Dock="Bottom" Columns="3" Rows="1" Height="40">
+            <Button x:Name="editBtn" Height="25" Width="100" Click="editBtn_Click">Redigere</Button>
+            <Button x:Name="insertBtn" Height="25" Width="100" Click="insertBtn_Click">Tilføj</Button>
+            <Button x:Name="deleteBtn" Height="25" Width="100" Click="deleteBtn_Click">Slet</Button>
+        </UniformGrid>
+        <DataGrid x:Name="selectionGrid" IsReadOnly="True" SelectionChanged="selectionGrid_SelectionChanged">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Fornavn" Width="*" Binding="{Binding Firstname}"></DataGridTextColumn>
+                <DataGridTextColumn Header="Efternavn" Width="*" Binding="{Binding Lastname}"></DataGridTextColumn>
+                <DataGridTextColumn Header="Parti" Width="*" Binding="{Binding Party}"></DataGridTextColumn>
+                <DataGridTextColumn Header="Udvalg" Width="*" Binding="{Binding Selection}"></DataGridTextColumn>
+            </DataGrid.Columns>
+        </DataGrid>
+    </DockPanel>
+</Page>
