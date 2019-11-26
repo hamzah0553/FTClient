@@ -42,7 +42,7 @@
           <Key>
             <PropertyRef Name="id" />
           </Key>
-          <Property Name="id" Type="int" Nullable="false" />
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="politicianId" Type="int" Nullable="false" />
           <Property Name="ministerialPostId" Type="int" Nullable="false" />
           <Property Name="startDate" Type="date" Nullable="false" />
@@ -379,18 +379,6 @@
           <Property Name="partiesInThisGov" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="MinisterialPost" Relationship="Self.FK_MinisterialPost_Government" FromRole="Government" ToRole="MinisterialPost" />
         </EntityType>
-        <EntityType Name="Minister">
-          <Key>
-            <PropertyRef Name="id" />
-          </Key>
-          <Property Name="id" Type="Int32" Nullable="false" />
-          <Property Name="politicianId" Type="Int32" Nullable="false" />
-          <Property Name="ministerialPostId" Type="Int32" Nullable="false" />
-          <Property Name="startDate" Type="DateTime" Nullable="false" Precision="0" />
-          <Property Name="endDate" Type="DateTime" Precision="0" />
-          <NavigationProperty Name="MinisterialPost" Relationship="Self.FK_Minister_MinisterialPost" FromRole="Minister" ToRole="MinisterialPost" />
-          <NavigationProperty Name="Politician" Relationship="Self.FK_Minister_Politician" FromRole="Minister" ToRole="Politician" />
-        </EntityType>
         <EntityType Name="MinisterialPost">
           <Key>
             <PropertyRef Name="id" />
@@ -399,7 +387,7 @@
           <Property Name="title" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="governmentId" Type="Int32" Nullable="false" />
           <NavigationProperty Name="Government" Relationship="Self.FK_MinisterialPost_Government" FromRole="MinisterialPost" ToRole="Government" />
-          <NavigationProperty Name="Minister" Relationship="Self.FK_Minister_MinisterialPost" FromRole="MinisterialPost" ToRole="Minister" />
+          <NavigationProperty Name="Minister" Relationship="FTDatabaseModel.FK_Minister_MinisterialPost" FromRole="MinisterialPost" ToRole="Minister" />
         </EntityType>
         <EntityType Name="Parliament">
           <Key>
@@ -441,10 +429,10 @@
           <Property Name="lastname" Type="String" MaxLength="150" FixedLength="false" Unicode="false" />
           <Property Name="partyId" Type="Int32" Nullable="false" />
           <NavigationProperty Name="ContactInfo" Relationship="Self.FK_ContactInfo_Politician" FromRole="Politician" ToRole="ContactInfo" />
-          <NavigationProperty Name="Minister" Relationship="Self.FK_Minister_Politician" FromRole="Politician" ToRole="Minister" />
           <NavigationProperty Name="ParliamentMember" Relationship="Self.FK_ParliamentMember_Politician" FromRole="Politician" ToRole="ParliamentMember" />
           <NavigationProperty Name="Party" Relationship="Self.FK_Politician_Party" FromRole="Politician" ToRole="Party" />
           <NavigationProperty Name="Mayor" Relationship="FTDatabaseModel.FK_Mayor_Politician" FromRole="Politician" ToRole="Mayor" />
+          <NavigationProperty Name="Minister" Relationship="FTDatabaseModel.FK_Minister_Politician" FromRole="Politician" ToRole="Minister" />
         </EntityType>
         <EntityType Name="sysdiagrams">
           <Key>
@@ -477,30 +465,6 @@
             </Principal>
             <Dependent Role="MinisterialPost">
               <PropertyRef Name="governmentId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Minister_MinisterialPost">
-          <End Role="MinisterialPost" Type="Self.MinisterialPost" Multiplicity="1" />
-          <End Role="Minister" Type="Self.Minister" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="MinisterialPost">
-              <PropertyRef Name="id" />
-            </Principal>
-            <Dependent Role="Minister">
-              <PropertyRef Name="ministerialPostId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Minister_Politician">
-          <End Role="Politician" Type="Self.Politician" Multiplicity="1" />
-          <End Role="Minister" Type="Self.Minister" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Politician">
-              <PropertyRef Name="id" />
-            </Principal>
-            <Dependent Role="Minister">
-              <PropertyRef Name="politicianId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -543,7 +507,6 @@
         <EntityContainer Name="FTDatabaseEntities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="ContactInfo" EntityType="Self.ContactInfo" />
           <EntitySet Name="Government" EntityType="Self.Government" />
-          <EntitySet Name="Minister" EntityType="Self.Minister" />
           <EntitySet Name="MinisterialPost" EntityType="Self.MinisterialPost" />
           <EntitySet Name="Parliament" EntityType="Self.Parliament" />
           <EntitySet Name="ParliamentMember" EntityType="Self.ParliamentMember" />
@@ -557,14 +520,6 @@
           <AssociationSet Name="FK_MinisterialPost_Government" Association="Self.FK_MinisterialPost_Government">
             <End Role="Government" EntitySet="Government" />
             <End Role="MinisterialPost" EntitySet="MinisterialPost" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Minister_MinisterialPost" Association="Self.FK_Minister_MinisterialPost">
-            <End Role="MinisterialPost" EntitySet="MinisterialPost" />
-            <End Role="Minister" EntitySet="Minister" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Minister_Politician" Association="Self.FK_Minister_Politician">
-            <End Role="Politician" EntitySet="Politician" />
-            <End Role="Minister" EntitySet="Minister" />
           </AssociationSet>
           <AssociationSet Name="FK_ParliamentMember_Parliament" Association="Self.FK_ParliamentMember_Parliament">
             <End Role="Parliament" EntitySet="Parliament" />
@@ -607,6 +562,15 @@
           <AssociationSet Name="FK_Region_Municipality" Association="FTDatabaseModel.FK_Region_Municipality">
             <End Role="Municipality" EntitySet="Municipality" />
             <End Role="Region" EntitySet="Region" />
+          </AssociationSet>
+          <EntitySet Name="Minister" EntityType="FTDatabaseModel.Minister" />
+          <AssociationSet Name="FK_Minister_MinisterialPost" Association="FTDatabaseModel.FK_Minister_MinisterialPost">
+            <End Role="MinisterialPost" EntitySet="MinisterialPost" />
+            <End Role="Minister" EntitySet="Minister" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Minister_Politician" Association="FTDatabaseModel.FK_Minister_Politician">
+            <End Role="Politician" EntitySet="Politician" />
+            <End Role="Minister" EntitySet="Minister" />
           </AssociationSet>
         </EntityContainer>
         <EntityType Name="Constituency">
@@ -735,6 +699,42 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="Minister">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="politicianId" Type="Int32" Nullable="false" />
+          <Property Name="ministerialPostId" Type="Int32" Nullable="false" />
+          <Property Name="startDate" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="endDate" Type="DateTime" Precision="0" />
+          <NavigationProperty Name="MinisterialPost" Relationship="FTDatabaseModel.FK_Minister_MinisterialPost" FromRole="Minister" ToRole="MinisterialPost" />
+          <NavigationProperty Name="Politician" Relationship="FTDatabaseModel.FK_Minister_Politician" FromRole="Minister" ToRole="Politician" />
+        </EntityType>
+        <Association Name="FK_Minister_MinisterialPost">
+          <End Type="FTDatabaseModel.MinisterialPost" Role="MinisterialPost" Multiplicity="1" />
+          <End Type="FTDatabaseModel.Minister" Role="Minister" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="MinisterialPost">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Minister">
+              <PropertyRef Name="ministerialPostId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Minister_Politician">
+          <End Type="FTDatabaseModel.Politician" Role="Politician" Multiplicity="1" />
+          <End Type="FTDatabaseModel.Minister" Role="Minister" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Politician">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Minister">
+              <PropertyRef Name="politicianId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -758,17 +758,6 @@
                 <ScalarProperty Name="startDate" ColumnName="startDate" />
                 <ScalarProperty Name="endDate" ColumnName="endDate" />
                 <ScalarProperty Name="partiesInThisGov" ColumnName="partiesInThisGov" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="Minister">
-            <EntityTypeMapping TypeName="FTDatabaseModel.Minister">
-              <MappingFragment StoreEntitySet="Minister">
-                <ScalarProperty Name="id" ColumnName="id" />
-                <ScalarProperty Name="politicianId" ColumnName="politicianId" />
-                <ScalarProperty Name="ministerialPostId" ColumnName="ministerialPostId" />
-                <ScalarProperty Name="startDate" ColumnName="startDate" />
-                <ScalarProperty Name="endDate" ColumnName="endDate" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -877,6 +866,17 @@
               <MappingFragment StoreEntitySet="Region">
                 <ScalarProperty Name="municipalityId" ColumnName="municipalityId" />
                 <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Minister">
+            <EntityTypeMapping TypeName="FTDatabaseModel.Minister">
+              <MappingFragment StoreEntitySet="Minister">
+                <ScalarProperty Name="endDate" ColumnName="endDate" />
+                <ScalarProperty Name="startDate" ColumnName="startDate" />
+                <ScalarProperty Name="ministerialPostId" ColumnName="ministerialPostId" />
+                <ScalarProperty Name="politicianId" ColumnName="politicianId" />
                 <ScalarProperty Name="id" ColumnName="id" />
               </MappingFragment>
             </EntityTypeMapping>

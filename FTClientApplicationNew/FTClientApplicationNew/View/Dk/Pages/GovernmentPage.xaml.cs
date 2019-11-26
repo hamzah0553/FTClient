@@ -13,6 +13,8 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
+using FTClientApplication.ViewModel.Dk;
+
 namespace FTClientApplication.View.Dk.Pages
 {
     /// <summary>
@@ -20,9 +22,20 @@ namespace FTClientApplication.View.Dk.Pages
     /// </summary>
     public partial class GovernmentPage : Page
     {
+        GovernmentVM governmentVM = new GovernmentVM();
         public GovernmentPage()
         {
             InitializeComponent();
+            FillGrid();
+        }
+
+        private void FillGrid()
+        {
+            List<CustomMinister> ministers = governmentVM.GetMinisters();
+            foreach (var item in ministers)
+            {
+                governmentGrid.Items.Add(item);
+            }
         }
 
         private void governmentBox_DropDownClosed(object sender, EventArgs e)

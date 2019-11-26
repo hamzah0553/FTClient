@@ -4,10 +4,9 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="7ab6ecc3fba742ca9854eee2e4dcfe08" Name="Diagram1">
+      <Diagram DiagramId="7ab6ecc3fba742ca9854eee2e4dcfe08" Name="Diagram1" ZoomLevel="72">
         <EntityTypeShape EntityType="FTDatabaseModel.ContactInfo" Width="1.5" PointX="5.25" PointY="4.75" IsExpanded="true" />
         <EntityTypeShape EntityType="FTDatabaseModel.Government" Width="1.5" PointX="0.75" PointY="1.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="FTDatabaseModel.Minister" Width="1.5" PointX="5.125" PointY="1.5" IsExpanded="true" />
         <EntityTypeShape EntityType="FTDatabaseModel.MinisterialPost" Width="1.5" PointX="3" PointY="0.75" IsExpanded="true" />
         <EntityTypeShape EntityType="FTDatabaseModel.Parliament" Width="1.5" PointX="3" PointY="7.875" IsExpanded="true" />
         <EntityTypeShape EntityType="FTDatabaseModel.ParliamentMember" Width="1.5" PointX="5" PointY="7.75" IsExpanded="true" />
@@ -16,8 +15,6 @@
         <EntityTypeShape EntityType="FTDatabaseModel.sysdiagrams" Width="1.5" PointX="7.75" PointY="1.375" IsExpanded="true" />
         <AssociationConnector Association="FTDatabaseModel.FK_ContactInfo_Politician" ManuallyRouted="false" />
         <AssociationConnector Association="FTDatabaseModel.FK_MinisterialPost_Government" ManuallyRouted="false" />
-        <AssociationConnector Association="FTDatabaseModel.FK_Minister_MinisterialPost" ManuallyRouted="false" />
-        <AssociationConnector Association="FTDatabaseModel.FK_Minister_Politician" ManuallyRouted="false" />
         <AssociationConnector Association="FTDatabaseModel.FK_ParliamentMember_Parliament" ManuallyRouted="false" />
         <AssociationConnector Association="FTDatabaseModel.FK_ParliamentMember_Politician" ManuallyRouted="false" />
         <AssociationConnector Association="FTDatabaseModel.FK_Politician_Party" ManuallyRouted="false" />
@@ -32,9 +29,10 @@
         <EntityTypeShape EntityType="FTDatabaseModel.Region" Width="1.5" PointX="11.625" PointY="5" />
         <AssociationConnector Association="FTDatabaseModel.FK_Mayor_Municipality" />
         <AssociationConnector Association="FTDatabaseModel.FK_Region_Municipality" />
-        <AssociationConnector Association="FTDatabaseModel.FK_Mayor_Municipality" />
         <AssociationConnector Association="FTDatabaseModel.FK_Mayor_Politician" />
-        <AssociationConnector Association="FTDatabaseModel.FK_Region_Municipality" />
+        <EntityTypeShape EntityType="FTDatabaseModel.Minister" Width="1.5" PointX="5.25" PointY="0.875" />
+        <AssociationConnector Association="FTDatabaseModel.FK_Minister_MinisterialPost" />
+        <AssociationConnector Association="FTDatabaseModel.FK_Minister_Politician" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

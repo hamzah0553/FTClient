@@ -18,9 +18,9 @@ namespace FTClientApplication.Model
         public Politician()
         {
             this.ContactInfo = new ObservableCollection<ContactInfo>();
-            this.Minister = new ObservableCollection<Minister>();
             this.ParliamentMember = new ObservableCollection<ParliamentMember>();
             this.Mayor = new ObservableCollection<Mayor>();
+            this.Minister = new ObservableCollection<Minister>();
         }
     
         public int id { get; set; }
@@ -31,11 +31,11 @@ namespace FTClientApplication.Model
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ObservableCollection<ContactInfo> ContactInfo { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ObservableCollection<Minister> Minister { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ObservableCollection<ParliamentMember> ParliamentMember { get; set; }
         public virtual Party Party { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ObservableCollection<Mayor> Mayor { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ObservableCollection<Minister> Minister { get; set; }
     }
 }

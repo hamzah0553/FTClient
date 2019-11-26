@@ -27,7 +27,6 @@ namespace FTClientApplication.Model
     
         public virtual DbSet<ContactInfo> ContactInfo { get; set; }
         public virtual DbSet<Government> Government { get; set; }
-        public virtual DbSet<Minister> Minister { get; set; }
         public virtual DbSet<MinisterialPost> MinisterialPost { get; set; }
         public virtual DbSet<Parliament> Parliament { get; set; }
         public virtual DbSet<ParliamentMember> ParliamentMember { get; set; }
@@ -40,5 +39,6 @@ namespace FTClientApplication.Model
         public virtual DbSet<Mayor> Mayor { get; set; }
         public virtual DbSet<Municipality> Municipality { get; set; }
         public virtual DbSet<Region> Region { get; set; }
+        public virtual DbSet<Minister> Minister { get; set; }
     }
 }

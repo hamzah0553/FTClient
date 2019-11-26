@@ -13,7 +13,7 @@
                 <Button Click="HomeButtonClick">Home</Button>
                 <Button Click="ParliamentButtonClick">Folketinget</Button>
                 <Button x:Name="selectionBtn" Click="selectionBtn_Click">Udvalg</Button>
-                <Button>Regeringen</Button>
+                <Button Click="Button_Click">Regeringen</Button>
                 <Button>Borgmestre</Button>
             </UniformGrid>
             <Frame x:Name="_frame" Source="Pages/HomePage.xaml" NavigationUIVisibility="Hidden"></Frame>

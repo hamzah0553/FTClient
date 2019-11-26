@@ -10,8 +10,6 @@
 
     <Grid>
         <StackPanel>
-            <Label>Hello How are you</Label>
-            <Label>Wut is this</Label>
         </StackPanel>
     </Grid>
 </Page>
