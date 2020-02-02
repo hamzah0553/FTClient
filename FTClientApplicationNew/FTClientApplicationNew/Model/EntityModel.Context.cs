@@ -37,8 +37,8 @@ namespace FTClientApplication.Model
         public virtual DbSet<Selection> Selection { get; set; }
         public virtual DbSet<Selection_member> Selection_member { get; set; }
         public virtual DbSet<Mayor> Mayor { get; set; }
+        public virtual DbSet<Minister> Minister { get; set; }
         public virtual DbSet<Municipality> Municipality { get; set; }
         public virtual DbSet<Region> Region { get; set; }
-        public virtual DbSet<Minister> Minister { get; set; }
     }
 }

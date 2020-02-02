@@ -22,5 +22,6 @@ namespace FTClientApplication.ViewModel
             dashboard.Show();
             
         }
+
     }
 }

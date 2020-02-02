@@ -7,5 +7,9 @@
         <Style x:Key="ColumnElementStyle" TargetType="TextBlock">
             <Setter Property="Margin" Value="10, 5, 10, 5"></Setter>
         </Style>
+        <Style TargetType="Button">
+            <Setter Property="Background" Value="#1C6B9D"/>
+            <Setter Property="Foreground" Value="White"/>
+        </Style>
     </Application.Resources>
 </Application>

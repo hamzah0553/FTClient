@@ -18,7 +18,7 @@ namespace FTClientApplication.Model
         public int politicianId { get; set; }
         public int municipalityId { get; set; }
     
-        public virtual Municipality Municipality { get; set; }
         public virtual Politician Politician { get; set; }
+        public virtual Municipality Municipality { get; set; }
     }
 }

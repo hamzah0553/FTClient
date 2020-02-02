@@ -26,33 +26,27 @@ namespace FTClientApplication.View.Dk.Pages
         public SelectionPage()
         {
             InitializeComponent();
-            parliamentBox.SelectedIndex = 0;
             FillComboBoxes();
         }
 
         //Fills the comboboxes from selectionVM
         private void FillComboBoxes()
         {
-            foreach (var item in selectionVM.GetParliaments())
-            {
-                parliamentBox.Items.Add(item.startYear);
-            }
             foreach (var item in selectionVM.GetSelections())
             {
                 selectionBox.Items.Add(item.name);
             }
         }
-        private void LoadData(int selectedYear, string selection)
+        private void LoadData(string selection)
         {
             selectionVM = null;
             selectionVM = new SelectionVM();
-            var members = selectionVM.GetSelectionMembers(selection, selectedYear);
+            var members = selectionVM.GetSelectionMembers(selection);
             foreach (var member in members)
             {
                 if (member != null)
                 {
                     selectionGrid.Items.Add(member);
-                    insertBtn.IsEnabled = true;
                 }
             }
         }
@@ -60,21 +54,14 @@ namespace FTClientApplication.View.Dk.Pages
         private void RefreshParliamentGrid()
         {
             selectionGrid.Items.Clear();
-            LoadData(currentYear, selectionBox.Text);
+            LoadData(selectionBox.Text);
         }
 
         //events
         private void selectionBox_DropDownClosed(object sender, EventArgs e)
         {
             selectionGrid.Items.Clear();
-            currentYear = (int)parliamentBox.SelectedItem;
-            LoadData(currentYear, selectionBox.Text);
-        }
-        private void parliamentBox_DropDownClosed(object sender, EventArgs e)
-        {
-            selectionGrid.Items.Clear();
-            currentYear = (int)parliamentBox.SelectedItem;
-            LoadData(currentYear, selectionBox.Text);
+            LoadData(selectionBox.Text);
         }
 
         private void editBtn_Click(object sender, RoutedEventArgs e)

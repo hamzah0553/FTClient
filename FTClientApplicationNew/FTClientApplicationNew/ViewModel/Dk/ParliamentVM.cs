@@ -10,7 +10,7 @@ using FTClientApplication.OdataConsumer;
 
 namespace FTClientApplication.ViewModel.Dk
 {
-    class ParliamentVM
+    class ParliamentVM: IExcelAdapter
     {
 
         FTDatabaseEntities entities = new FTDatabaseEntities();
@@ -38,9 +38,9 @@ namespace FTClientApplication.ViewModel.Dk
         }
 
         //gets members from specifik parliament
-        public List<CustomPolitcian> GetParliamentWithMembers(int parliamentYear)
+        public List<CustomPolitcian> GetParliamentWithMembers()
         {
-            Parliament selectedParliament = entities.Parliament.Where(p => p.startYear == parliamentYear).SingleOrDefault();
+            Parliament selectedParliament = entities.Parliament.Where(p => p.startYear == 2019).SingleOrDefault();
             var members = entities.ParliamentMember.Where(p => p.parliamentId == selectedParliament.id).ToList();
             List<CustomPolitcian> politcians = new List<CustomPolitcian>();
             foreach (var member in members)
@@ -103,6 +103,33 @@ namespace FTClientApplication.ViewModel.Dk
                     return true;
                 }
             }
+        }
+
+        public List<List<string>> ConvertData()
+        {
+            List<CustomPolitcian> politcians = GetParliamentWithMembers();
+            List<List<string>> lists = new List<List<string>>();
+            for (int i = 0; i < politcians.Count; i++)
+            {
+                lists.Add(new List<string>());
+                lists[i].Add(politcians[i].Firstname);
+                lists[i].Add(politcians[i].Lastname);
+                lists[i].Add(politcians[i].Phone);
+                lists[i].Add(politcians[i].Email);
+                lists[i].Add(politcians[i].Party);
+            }
+            return lists;
+        }
+
+        public List<string> GetColumnNames()
+        {
+            List<string> list = new List<string>();
+            list.Add("Fornavn");
+            list.Add("Efternavn");
+            list.Add("Telefon");
+            list.Add("E-mail");
+            list.Add("Parti");
+            return list;
         }
     }
     //the displayed data in datagrid view

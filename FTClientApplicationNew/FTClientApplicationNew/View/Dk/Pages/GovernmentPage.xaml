@@ -9,15 +9,10 @@
       Title="GovernmentPage">
 
     <DockPanel>
-        <UniformGrid DockPanel.Dock="Top" Columns="2" Rows="1" Height="40">
-            <ComboBox Height="25" Width="150" x:Name="governmentBox" DropDownClosed="governmentBox_DropDownClosed"></ComboBox>
-            <Button Height="25" Width="150">Add new selections</Button>
+        <UniformGrid DockPanel.Dock="Top" Columns="1" Rows="1" Height="40">
+            <Button Click="Button_Click"  Height="25" Width="150">Opdatere alle ministre</Button>
         </UniformGrid>
-        <UniformGrid DockPanel.Dock="Bottom" Columns="3" Rows="1" Height="40">
-            <Button x:Name="editBtn" Height="25" Width="100" Click="editBtn_Click">Redigere</Button>
-            <Button x:Name="insertBtn" Height="25" Width="100" Click="insertBtn_Click">Tilføj</Button>
-            <Button x:Name="deleteBtn" Height="25" Width="100" Click="deleteBtn_Click">Slet</Button>
-        </UniformGrid>
+
         <DataGrid x:Name="governmentGrid" IsReadOnly="True" SelectionChanged="governmentGrid_SelectionChanged">
             <DataGrid.Columns>
                 <DataGridTextColumn ElementStyle="{StaticResource ColumnElementStyle}" Header="Titel" Width="*" Binding="{Binding Title}"></DataGridTextColumn>

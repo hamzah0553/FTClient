@@ -35,23 +35,15 @@ namespace FTClientApplication.View.Dk.Pages
             editBtn.IsEnabled = false;
             insertBtn.IsEnabled = false;
             deleteBtn.IsEnabled = false;
-            FillComboBox();
+            RefreshParliamentGrid();
         }
 
-        //Fill combo box with parliament data from database
-        private void FillComboBox()
-        {
-            foreach (var item in parliament.GetParliaments())
-            {
-                parliamentBox.Items.Add(item.startYear);
-            }
-        }
         //load the members to the datagrid
         private void Load(int selectedYear)
         {
             parliament = null;
             parliament = new ParliamentVM();
-            var politicians = parliament.GetParliamentWithMembers(selectedYear);
+            var politicians = parliament.GetParliamentWithMembers();
             foreach (var politician in politicians)
             {
                 if (politician != null)
@@ -80,7 +72,6 @@ namespace FTClientApplication.View.Dk.Pages
             parliamentGrid.Items.Clear();
             editBtn.IsEnabled = false;
             deleteBtn.IsEnabled = false;
-            currentYear = (int)parliamentBox.SelectedItem;
             Load(currentYear);
         }
 

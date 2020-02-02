@@ -18,15 +18,14 @@ namespace FTClientApplication.Model
         public Municipality()
         {
             this.Mayor = new ObservableCollection<Mayor>();
-            this.Region = new ObservableCollection<Region>();
         }
     
         public int id { get; set; }
         public string name { get; set; }
+        public int regionId { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ObservableCollection<Mayor> Mayor { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ObservableCollection<Region> Region { get; set; }
+        public virtual Region Region { get; set; }
     }
 }

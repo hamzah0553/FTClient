@@ -62,5 +62,10 @@ namespace FTClientApplication.View.Dk.Pages
         {
 
         }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }

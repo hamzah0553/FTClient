@@ -64,7 +64,6 @@ namespace FTClientApplication.OdataConsumer
                         if (shouldInclude)
                         {
                             string[] fullname = SplitName(value);
-                            //Debug.WriteLine(fullname[0] + " " + fullname[1]);
                             string firstname = fullname[0];
                             string lastname = fullname[1];
                             Selection_member selection_Member = new Selection_member();
@@ -73,8 +72,6 @@ namespace FTClientApplication.OdataConsumer
                             {
                                 if (context.Politician.Where(p => p.firstname.Equals(firstname) && p.lastname.Equals(lastname)).Any())
                                 {
-
-
                                     Debug.WriteLine(firstname + " " + lastname + " " + indexes.SelectionIndex);
                                     selection_Member.parliamentMemberId =
                                         context.ParliamentMember.Where(p => p.Politician.firstname.Equals(firstname) &&

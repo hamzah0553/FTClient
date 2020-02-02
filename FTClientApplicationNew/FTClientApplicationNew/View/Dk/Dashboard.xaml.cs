@@ -42,6 +42,11 @@ namespace FTClientApplication.View.Dk
             _frame.Navigate(new SelectionPage());
         }
 
+        private void mayorBtn_Click(object sender, RoutedEventArgs e)
+        {
+            _frame.Navigate(new MayorPage());
+        }
+
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             _frame.Navigate(new GovernmentPage());

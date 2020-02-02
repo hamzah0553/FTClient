@@ -9,7 +9,7 @@ using FTClientApplication.Model;
 
 namespace FTClientApplication.ViewModel.Dk
 {
-    class SelectionVM
+    class SelectionVM: IExcelAdapter
     {
         FTDatabaseEntities entities = new FTDatabaseEntities();
 
@@ -24,11 +24,11 @@ namespace FTClientApplication.ViewModel.Dk
             return entities.Parliament.ToList();
         }
         //Returns selection members depending on parliament and selections
-        public List<CustomSelectionMember> GetSelectionMembers(string selectionName, int startYear)
+        public List<CustomSelectionMember> GetSelectionMembers(string selectionName)
         {
             List<CustomSelectionMember> members = new List<CustomSelectionMember>();
             List<Selection_member> tempList = entities.Selection_member.Where(s => s.Selection.name.Equals(selectionName) &&
-                s.ParliamentMember.Parliament.startYear == startYear).ToList();
+                s.ParliamentMember.Parliament.startYear == 2019).ToList();
             foreach (var item in tempList)
             {
                 CustomSelectionMember customSelectionMember = new CustomSelectionMember()
@@ -44,6 +44,39 @@ namespace FTClientApplication.ViewModel.Dk
             return members;
         }
 
+        public List<List<string>> ConvertData()
+        {
+            List<Selection> selections = GetSelections();
+            List<CustomSelectionMember> selectionMembers = new List<CustomSelectionMember>();
+            List<List<string>> lists = new List<List<string>>();
+            int count = 0;
+            for (int i = 0; i < selections.Count; i++)
+            {
+                Debug.WriteLine(selections[i]);
+                selectionMembers = GetSelectionMembers(selections[i].name);
+                for (int j = 0; j < selectionMembers.Count; j++)
+                {
+                    Debug.WriteLine(selectionMembers[j].Firstname + " " + selectionMembers[j].Lastname);
+                    lists.Add(new List<string>());
+                    lists[count].Add(selectionMembers[j].Firstname);
+                    lists[count].Add(selectionMembers[j].Lastname);
+                    lists[count].Add(selectionMembers[j].Party);
+                    lists[count].Add(selectionMembers[j].Selection);
+                    count++;
+                }
+            }
+            return lists;
+        }
+
+        public List<string> GetColumnNames()
+        {
+            List<string> list = new List<string>();
+            list.Add("Fornavn");
+            list.Add("Efternavn");
+            list.Add("Parti");
+            list.Add("Udvalg");
+            return list;
+        }
     }
 
     public class CustomSelectionMember

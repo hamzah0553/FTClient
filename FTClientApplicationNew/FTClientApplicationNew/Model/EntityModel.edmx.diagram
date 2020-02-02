@@ -25,14 +25,14 @@
         <AssociationConnector Association="FTDatabaseModel.FK_Selection_member_ParliamentMember" />
         <AssociationConnector Association="FTDatabaseModel.FK_Selection_member_Selection" />
         <EntityTypeShape EntityType="FTDatabaseModel.Mayor" Width="1.5" PointX="11.625" PointY="7.625" />
-        <EntityTypeShape EntityType="FTDatabaseModel.Municipality" Width="1.5" PointX="9.375" PointY="6.25" />
-        <EntityTypeShape EntityType="FTDatabaseModel.Region" Width="1.5" PointX="11.625" PointY="5" />
-        <AssociationConnector Association="FTDatabaseModel.FK_Mayor_Municipality" />
-        <AssociationConnector Association="FTDatabaseModel.FK_Region_Municipality" />
         <AssociationConnector Association="FTDatabaseModel.FK_Mayor_Politician" />
         <EntityTypeShape EntityType="FTDatabaseModel.Minister" Width="1.5" PointX="5.25" PointY="0.875" />
         <AssociationConnector Association="FTDatabaseModel.FK_Minister_MinisterialPost" />
         <AssociationConnector Association="FTDatabaseModel.FK_Minister_Politician" />
+        <EntityTypeShape EntityType="FTDatabaseModel.Municipality" Width="1.5" PointX="9.375" PointY="13.625" />
+        <EntityTypeShape EntityType="FTDatabaseModel.Region" Width="1.5" PointX="7.125" PointY="13.875" />
+        <AssociationConnector Association="FTDatabaseModel.FK_Mayor_Municipality" />
+        <AssociationConnector Association="FTDatabaseModel.FK_Municipality_Region" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

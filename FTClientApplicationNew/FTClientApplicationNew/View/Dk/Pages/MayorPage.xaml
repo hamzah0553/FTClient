@@ -10,23 +10,18 @@
 
     <DockPanel>
         <UniformGrid DockPanel.Dock="Top" Columns="2" Rows="1" Height="40">
-            <ComboBox Height="25" Width="150" x:Name="parliamentBox" DropDownClosed="parliamentBox_DropDownClosed"></ComboBox>
-            <Button Height="25" Width="150">Add new borgmester</Button>
+            <Button Height="25" Width="150">Opdatere alle borgmestre</Button>
+            <Button Click="ExcelBtn_Click" x:Name="ExcelBtn" Height="25" Width="150">Eksporter til excel</Button>
         </UniformGrid>
-        <UniformGrid DockPanel.Dock="Bottom" Columns="3" Rows="1" Height="40">
-            <Button x:Name="editBtn" Height="25" Width="100" Click="editBtn_Click">Redigere</Button>
-            <Button x:Name="insertBtn" Height="25" Width="100" Click="insertBtn_Click">Tilføj</Button>
-            <Button x:Name="deleteBtn" Height="25" Width="100" Click="deleteBtn_Click">Slet</Button>
-        </UniformGrid>
-        <DataGrid x:Name="parliamentGrid" IsReadOnly="True" SelectionChanged="parliamentGrid_SelectionChanged">
+        <DataGrid x:Name="mayorGrid" IsReadOnly="True" SelectionChanged="parliamentGrid_SelectionChanged">
             <DataGrid.Columns>
-                <DataGridTextColumn Header="Region" Width="*" Binding="{Binding Region}"></DataGridTextColumn>
-                <DataGridTextColumn Header="Kommune" Width="*" Binding="{Binding Kommune}"></DataGridTextColumn>
-                <DataGridTextColumn Header="Borgmester" Width="*" Binding="{Binding Borgmester}"></DataGridTextColumn>
-                <DataGridTextColumn Header="Parti" Width="*" Binding="{Binding Parti}"></DataGridTextColumn>
-                <DataGridTextColumn Header="Telefon" Width="*" Binding="{Binding Telefon}"></DataGridTextColumn>
-                <DataGridTextColumn Header="Email" Width="*" Binding="{Binding Email}"></DataGridTextColumn>
-                <DataGridTextColumn Header="Farve" Width="*" Binding="{Binding Farve}"></DataGridTextColumn>
+                <DataGridTextColumn ElementStyle="{StaticResource ColumnElementStyle}" Header="Region" Width="*" Binding="{Binding Region}"></DataGridTextColumn>
+                <DataGridTextColumn ElementStyle="{StaticResource ColumnElementStyle}" Header="Kommune" Width="*" Binding="{Binding Municipality}"></DataGridTextColumn>
+                <DataGridTextColumn ElementStyle="{StaticResource ColumnElementStyle}" Header="Fornavn" Width="*" Binding="{Binding Firstname}"></DataGridTextColumn>
+                <DataGridTextColumn ElementStyle="{StaticResource ColumnElementStyle}" Header="Efternavn" Width="*" Binding="{Binding Lastname}"></DataGridTextColumn>
+                <DataGridTextColumn ElementStyle="{StaticResource ColumnElementStyle}" Header="Parti" Width="*" Binding="{Binding Party}"></DataGridTextColumn>
+                <DataGridTextColumn ElementStyle="{StaticResource ColumnElementStyle}" Header="Telefon" Width="*" Binding="{Binding Phone}"></DataGridTextColumn>
+                <DataGridTextColumn ElementStyle="{StaticResource ColumnElementStyle}" Header="Email" Width="*" Binding="{Binding Email}"></DataGridTextColumn>
             </DataGrid.Columns>
         </DataGrid>
     </DockPanel>
