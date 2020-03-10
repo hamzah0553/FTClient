@@ -1,4 +1,5 @@
 ﻿using FTClientApplication.Model;
+using FTClientApplication.OdataConsumer;
 using FTClientApplication.Service;
 using System;
 using System.Collections.Generic;
@@ -9,51 +10,53 @@ using System.Threading.Tasks;
 
 namespace FTClientApplication.ViewModel.Dk
 {
-    class MayorVM: IExcelAdapter
+    class MayorVM : IExcelAdapter
     {
 
         FTDatabaseEntities entities = new FTDatabaseEntities();
         DBService service = new DBService();
 
-
         public void AddMayors(List<CustomMayor> mayors)
         {
-
-            List<CustomMayor> ministers = new List<CustomMayor>();
-
-            foreach (var item in mayors)
+            using (var entity = new FTDatabaseEntities())
             {
-                Politician politician = service.GetPolitician(item.Firstname, item.Lastname);
-                if (politician == null)
-                {
-                    politician = new Politician();
-                    politician.firstname = item.Firstname;
-                    politician.lastname = item.Lastname;
-                    politician.partyId = entities.Party.Where(p => p.name.Equals(item.Party)).SingleOrDefault().id;
-                    service.AddPolitician(politician);
 
-                    politician = service.GetPolitician(item.Firstname, item.Lastname);
-                    ContactInfo contactInfo = new ContactInfo();
-                    contactInfo.email = item.Email;
-                    contactInfo.phone = item.Phone;
-                    contactInfo.politicianId = politician.id;
-                    service.AddContactInfo(contactInfo);
-                }
-                Municipality municipality = service.GetMunicipality(item.Municipality);
-                if (municipality == null)
+                List<CustomMayor> ministers = new List<CustomMayor>();
+
+                foreach (var item in mayors)
                 {
-                    using (var context = new FTDatabaseEntities())
+                    Politician politician = service.GetPolitician(item.Firstname, item.Lastname);
+                    if (politician == null)
                     {
-                        context.Municipality.Add(new Municipality() { regionId = 1, name = item.Municipality });
-                        context.SaveChanges();
+                        politician = new Politician();
+                        politician.firstname = item.Firstname;
+                        politician.lastname = item.Lastname;
+                        politician.partyId = entity.Party.Where(p => p.name.Equals(item.Party)).SingleOrDefault().id;
+                        service.AddPolitician(politician);
+
+                        politician = service.GetPolitician(item.Firstname, item.Lastname);
+                        ContactInfo contactInfo = new ContactInfo();
+                        contactInfo.email = item.Email;
+                        contactInfo.phone = item.Phone;
+                        contactInfo.politicianId = politician.id;
+                        service.AddContactInfo(contactInfo);
                     }
+                    Municipality municipality = service.GetMunicipality(item.Municipality);
+                    if (municipality == null)
+                    {
+                        using (var context = new FTDatabaseEntities())
+                        {
+                            context.Municipality.Add(new Municipality() { regionId = 1, name = item.Municipality });
+                            context.SaveChanges();
+                        }
+                    }
+                    Mayor mayor = new Mayor();
+                    mayor.politicianId = politician.id;
+                    mayor.municipalityId = service.GetMunicipality(item.Municipality).id;
+                    entity.Mayor.Add(mayor);
                 }
-                Mayor mayor = new Mayor();
-                mayor.politicianId = politician.id;
-                mayor.municipalityId = service.GetMunicipality(item.Municipality).id;
-                entities.Mayor.Add(mayor);
+                entity.SaveChanges();
             }
-            entities.SaveChanges();
         }
 
         public List<CustomMayor> GetMayors()
@@ -101,6 +104,7 @@ namespace FTClientApplication.ViewModel.Dk
             return service.GetParty(initial).name;
         }
 
+        //Excel adapter implementation
         public List<string> GetColumnNames()
         {
             List<string> list = new List<string>();
@@ -131,11 +135,18 @@ namespace FTClientApplication.ViewModel.Dk
             }
             return lists;
         }
+
+        public void UpdateMayors()
+        {
+            entities.Database.ExecuteSqlCommand("TRUNCATE TABLE [Mayor]");
+            MayorScraper mayorScraper = new MayorScraper();
+            AddMayors(mayorScraper.GetCustomMayors());
+        }
     }
 
-        
 
-    public class CustomMayor 
+
+    public class CustomMayor
     {
         public string Firstname { get; set; }
         public string Lastname { get; set; }

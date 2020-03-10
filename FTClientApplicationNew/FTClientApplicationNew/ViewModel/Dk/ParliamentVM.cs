@@ -6,7 +6,9 @@ using System.Text;
 using System.Threading.Tasks;
 
 using FTClientApplication.Model;
+using FTClientApplication.Model.OdataModels;
 using FTClientApplication.OdataConsumer;
+using FTClientApplication.Service;
 
 namespace FTClientApplication.ViewModel.Dk
 {
@@ -37,7 +39,7 @@ namespace FTClientApplication.ViewModel.Dk
             return entities.Party.ToList();
         }
 
-        //gets members from specifik parliament
+        //gets members from specific parliament
         public List<CustomPolitcian> GetParliamentWithMembers()
         {
             Parliament selectedParliament = entities.Parliament.Where(p => p.startYear == 2019).SingleOrDefault();
@@ -45,14 +47,22 @@ namespace FTClientApplication.ViewModel.Dk
             List<CustomPolitcian> politcians = new List<CustomPolitcian>();
             foreach (var member in members)
             {
+                var contact = member.Politician.ContactInfo.FirstOrDefault();
+                if(contact == null)
+                {
+                    contact = new ContactInfo();
+                    contact.id = 0;
+                    contact.phone = null;
+                    contact.email = null;
+                }
                 politcians.Add(new CustomPolitcian() 
                 {
                     PoliticianId = member.Politician.id,
-                    ContactId = member.Politician.ContactInfo.SingleOrDefault().id,
+                    ContactId = contact.id,
                     Firstname = member.Politician.firstname,
                     Lastname = member.Politician.lastname,
-                    Email = member.Politician.ContactInfo.SingleOrDefault().email,
-                    Phone = member.Politician.ContactInfo.SingleOrDefault().phone,
+                    Email = contact.email,
+                    Phone = contact.phone,
                     Party = member.Politician.Party.name 
                 });
             }
@@ -73,7 +83,7 @@ namespace FTClientApplication.ViewModel.Dk
 
             return msg;
         }
-        //add parliament member to db onl
+        //add parliament member to db only
         public bool AddMember(CustomPolitcian politcian)
         {
             if (politcian == null)
@@ -104,7 +114,7 @@ namespace FTClientApplication.ViewModel.Dk
                 }
             }
         }
-
+        //Implemented methods from excel adapter
         public List<List<string>> ConvertData()
         {
             List<CustomPolitcian> politcians = GetParliamentWithMembers();
@@ -131,6 +141,82 @@ namespace FTClientApplication.ViewModel.Dk
             list.Add("Parti");
             return list;
         }
+
+        public void AddMembers()
+        {
+            using (var entities = new FTDatabaseEntities())
+            {
+                DBService service = new DBService();
+                ParliamentMemberFilter filter = new ParliamentMemberFilter();
+                List<ExtractedValues> values = filter.GetParliamentMembers();
+                List<CustomPolitcian> politcians = new List<CustomPolitcian>();
+                foreach (var item in values)
+                {
+                    Politician politician = service.GetPolitician(item.Firstname, item.Lastname);
+                    if (politician == null)
+                    {
+                        politician = new Politician();
+                        politician.firstname = item.Firstname;
+                        politician.lastname = item.Lastname;
+                        politician.partyId = entities.Party.Where(p => p.name.Equals(item.Party)).SingleOrDefault().id;
+                        service.AddPolitician(politician);
+
+                        politician = service.GetPolitician(item.Firstname, item.Lastname);
+                        UpdateContact(politician.id, item.Contact);
+                    }
+                    else
+                    {
+                        var partyId = entities.Party.Where(p => p.name.Equals(item.Party)).SingleOrDefault().id;
+                        politician.partyId = partyId;
+                        entities.Politician.Attach(politician);
+                        entities.Entry(politician).Property(pol => pol.partyId).IsModified = true;
+                        entities.SaveChanges();
+                    }
+                    UpdateContact(politician.id, item.Contact);
+                    ParliamentMember member = new ParliamentMember();
+                    member.politicianId = politician.id;
+                    member.parliamentId = 1;
+                    entities.ParliamentMember.Add(member);
+                }
+                entities.SaveChanges();
+            }
+        }
+
+        private void UpdateContact(int politicianId, ContactInfo newContact)
+        {
+            DBService service = new DBService();
+            ContactInfo contactInfo = newContact;
+            var checkContact = entities.ContactInfo.Where(c => c.email.Equals(contactInfo.email) && c.phone.Equals(contactInfo.phone));
+            if (!checkContact.Any())
+            {
+                contactInfo.politicianId = politicianId;
+                service.AddContactInfo(contactInfo);
+            }
+            else
+            {
+                checkContact.First().email = newContact.email;
+                checkContact.First().phone = newContact.phone;
+                using (var context = new FTDatabaseEntities())
+                {
+                    ContactInfo testContact = checkContact.First();
+                    testContact.phone = newContact.phone;
+                    testContact.email = newContact.email;
+                    context.SaveChanges();
+                }
+            }
+        }
+
+        public void UpdateMembers()
+        {
+            entities.Database.ExecuteSqlCommand("ALTER TABLE [Selection_member] DROP CONSTRAINT FK_Selection_member_ParliamentMember");
+            entities.Database.ExecuteSqlCommand("TRUNCATE TABLE [Selection_member]");
+            entities.Database.ExecuteSqlCommand("TRUNCATE TABLE [ParliamentMember]");
+            entities.Database.ExecuteSqlCommand("TRUNCATE TABLE [ContactInfo]");
+            entities.Database.ExecuteSqlCommand("ALTER TABLE [Selection_member] " +
+                "ADD CONSTRAINT FK_Selection_member_ParliamentMember FOREIGN KEY (parliamentMemberId) " +
+                "REFERENCES [ParliamentMember] (id) ON DELETE CASCADE ON UPDATE CASCADE");
+            AddMembers();
+        }
     }
     //the displayed data in datagrid view
     public class CustomPolitcian
@@ -143,7 +229,8 @@ namespace FTClientApplication.ViewModel.Dk
         public string Phone { get; set; }
         public string Party { get; set; }
 
-
     }
+
+    
 
 }

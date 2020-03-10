@@ -100,5 +100,12 @@ namespace FTClientApplication.View.Dk.Pages
             edit.Show();
             edit.Unloaded += Edit_Unloaded; ;
         }
+
+        private void updateParliamentBtn_Click(object sender, RoutedEventArgs e)
+        {
+            parliament.UpdateMembers();
+            parliamentGrid.Items.Clear();
+            Load(currentYear);
+        }
     }
 }

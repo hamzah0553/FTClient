@@ -64,20 +64,11 @@ namespace FTClientApplication.View.Dk.Pages
             LoadData(selectionBox.Text);
         }
 
-        private void editBtn_Click(object sender, RoutedEventArgs e)
+        private void updateButton_Click(object sender, RoutedEventArgs e)
         {
-
+            selectionVM.UpdateData();
         }
 
-        private void insertBtn_Click(object sender, RoutedEventArgs e)
-        {
-
-        }
-
-        private void deleteBtn_Click(object sender, RoutedEventArgs e)
-        {
-
-        }
 
         private void selectionGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {

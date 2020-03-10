@@ -4,12 +4,28 @@
              xmlns:local="clr-namespace:FTClientApplication"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
+        <!--Column Style-->
         <Style x:Key="ColumnElementStyle" TargetType="TextBlock">
             <Setter Property="Margin" Value="10, 5, 10, 5"></Setter>
         </Style>
+        <!--Button styles-->
         <Style TargetType="Button">
             <Setter Property="Background" Value="#1C6B9D"/>
             <Setter Property="Foreground" Value="White"/>
+        </Style>
+        <!--Data grid styles-->
+        <Style TargetType="DataGrid">
+            <Setter Property="ColumnHeaderStyle" Value="{DynamicResource dataGridHeaderStyle}"/>
+            <Setter Property="HeadersVisibility" Value="Column"/>
+        </Style>
+        <!--Data grid header style-->
+        <Style x:Key="dataGridHeaderStyle" TargetType="DataGridColumnHeader">
+            <Setter Property="Background" Value="#1C6B9D"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="FontSize" Value="18"/>
+            <Setter Property="Height" Value="30"/>
+            <Setter Property="HorizontalAlignment" Value="Stretch"/>
+            <Setter Property="HorizontalContentAlignment" Value="Center"/>
         </Style>
     </Application.Resources>
 </Application>

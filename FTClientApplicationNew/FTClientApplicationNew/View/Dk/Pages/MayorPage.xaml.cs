@@ -42,24 +42,12 @@ namespace FTClientApplication.View.Dk.Pages
             }
         }
 
-        private void parliamentBox_DropDownClosed(object sender, EventArgs e)
+
+        private void updateMayorsBtn_Click(object sender, RoutedEventArgs e)
         {
-
-        }
-
-        private void editBtn_Click(object sender, RoutedEventArgs e)
-        {
-
-        }
-
-        private void insertBtn_Click(object sender, RoutedEventArgs e)
-        {
-
-        }
-
-        private void deleteBtn_Click(object sender, RoutedEventArgs e)
-        {
-
+            mayorVM.UpdateMayors();
+            mayorGrid.Items.Clear();
+            LoadData();
         }
 
         private void parliamentGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)

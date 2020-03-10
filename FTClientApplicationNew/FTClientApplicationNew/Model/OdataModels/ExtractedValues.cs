@@ -14,6 +14,5 @@ namespace FTClientApplication.Model.OdataModels
         public string PartyShortname { get; set; }
         public string Title { get; set; }
         public ContactInfo Contact { get; set; }
-
     }
 }

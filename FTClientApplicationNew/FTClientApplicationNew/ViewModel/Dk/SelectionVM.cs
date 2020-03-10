@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 using FTClientApplication.Model;
+using FTClientApplication.OdataConsumer;
 
 namespace FTClientApplication.ViewModel.Dk
 {
@@ -23,6 +24,14 @@ namespace FTClientApplication.ViewModel.Dk
         {
             return entities.Parliament.ToList();
         }
+
+        public void UpdateData()
+        {
+            entities.Database.ExecuteSqlCommand("TRUNCATE TABLE [Selection_member]");
+            SelectionScraper scraper = new SelectionScraper();
+            scraper.GetAllMembers();
+        }
+
         //Returns selection members depending on parliament and selections
         public List<CustomSelectionMember> GetSelectionMembers(string selectionName)
         {

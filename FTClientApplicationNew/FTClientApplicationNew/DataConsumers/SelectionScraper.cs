@@ -13,6 +13,9 @@ using FTClientApplication.Model;
 
 namespace FTClientApplication.OdataConsumer
 {
+    //Note for this class
+    //Every selection needs to be manually added to the database 
+    //If the selection doesnt exist the program will crash
     public class SelectionScraper
     {
         int parliamentId;
@@ -20,9 +23,9 @@ namespace FTClientApplication.OdataConsumer
         List<UrlItem> urlList = new List<UrlItem>();
         List<HtmlDocument> documents = new List<HtmlDocument>();
 
-        public SelectionScraper(int parliamentId)
+        public SelectionScraper()
         {
-            this.parliamentId = parliamentId;
+            this.parliamentId = 1;
             urlList.Add(new UrlItem("https://www.ft.dk/da/udvalg/udvalgene/beu/medlemsoversigt", 1));
             urlList.Add(new UrlItem("https://www.ft.dk/da/udvalg/udvalgene/eru/medlemsoversigt", 2));
             urlList.Add(new UrlItem("https://www.ft.dk/da/udvalg/udvalgene/fiu/medlemsoversigt", 4));
@@ -30,6 +33,10 @@ namespace FTClientApplication.OdataConsumer
             urlList.Add(new UrlItem("https://www.ft.dk/da/udvalg/udvalgene/kef/medlemsoversigt", 3));
             urlList.Add(new UrlItem("https://www.ft.dk/da/udvalg/udvalgene/sau/medlemsoversigt", 7));
             urlList.Add(new UrlItem("https://www.ft.dk/da/udvalg/udvalgene/ufu/medlemsoversigt", 6));
+            urlList.Add(new UrlItem("https://www.ft.dk/da/udvalg/udvalgene/euu/medlemsoversigt", 8));
+            urlList.Add(new UrlItem("https://www.ft.dk/da/udvalg/udvalgene/mof/medlemsoversigt", 9));
+            urlList.Add(new UrlItem("https://www.ft.dk/da/udvalg/udvalgene/reu/medlemsoversigt", 10));
+
             for (int i = 0; i < urlList.Count; i++)
             {
                 documents.Add(web.Load(urlList[i].Url));

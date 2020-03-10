@@ -10,7 +10,7 @@
 
     <DockPanel>
         <UniformGrid DockPanel.Dock="Top" Columns="1" Rows="1" Height="40">
-            <Button Click="Button_Click"  Height="25" Width="150">Opdatere alle ministre</Button>
+            <Button x:Name="updateGovBtn" Click="updateGovBtn_Click"  Height="25" Width="150">Opdatere alle ministre</Button>
         </UniformGrid>
 
         <DataGrid x:Name="governmentGrid" IsReadOnly="True" SelectionChanged="governmentGrid_SelectionChanged">

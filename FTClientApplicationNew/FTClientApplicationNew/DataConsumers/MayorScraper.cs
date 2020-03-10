@@ -43,11 +43,14 @@ namespace FTClientApplication.OdataConsumer
                 documents.Add(web.Load(urlList[i]));
             }
             SaveAllMayors();
-
-            mayorVM.AddMayors(mayors);
         }
 
-        public void SaveAllMayors()
+        public List<CustomMayor> GetCustomMayors()
+        {
+            return mayors;
+        }
+
+        private void SaveAllMayors()
         {
             var stopWatch = Stopwatch.StartNew();
             for (int i = 0; i < documents.Count; i++)
@@ -69,7 +72,7 @@ namespace FTClientApplication.OdataConsumer
             Debug.WriteLine(stopWatch.ElapsedMilliseconds);
         }
 
-        public void SaveMayors(object data)
+        private void SaveMayors(object data)
         {
             int index = (int)data;
             bool isMayor = false;

@@ -54,6 +54,7 @@
     <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.12.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
+    <Reference Include="PresentationFramework.Aero2" />
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Data" />
@@ -142,11 +143,11 @@
     <Compile Include="Model\sysdiagrams.cs">
       <DependentUpon>EntityModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="OdataConsumer\BiographyReader.cs" />
-    <Compile Include="OdataConsumer\MayorScraper.cs" />
-    <Compile Include="OdataConsumer\MinisterScraper.cs" />
-    <Compile Include="OdataConsumer\ParliamentMemberFilter.cs" />
-    <Compile Include="OdataConsumer\SelectionScraper.cs" />
+    <Compile Include="DataConsumers\BiographyReader.cs" />
+    <Compile Include="DataConsumers\MayorScraper.cs" />
+    <Compile Include="DataConsumers\MinisterScraper.cs" />
+    <Compile Include="DataConsumers\ParliamentMemberFilter.cs" />
+    <Compile Include="DataConsumers\SelectionScraper.cs" />
     <Compile Include="Service\DBService.cs" />
     <Compile Include="Service\ExcelAssembler.cs" />
     <Compile Include="Service\ExcelOutputter.cs" />

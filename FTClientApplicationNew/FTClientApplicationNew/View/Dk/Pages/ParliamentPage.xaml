@@ -10,7 +10,7 @@
 
     <DockPanel>
         <UniformGrid DockPanel.Dock="Top" Columns="1" Rows="1" Height="40">
-            <Button Height="25" Width="150">Hent parliament</Button>
+            <Button x:Name="updateParliamentBtn" Click="updateParliamentBtn_Click" Height="25" Width="150">Hent parliament</Button>
         </UniformGrid>
         <UniformGrid DockPanel.Dock="Bottom" Columns="3" Rows="1" Height="40">
             <Button x:Name="editBtn" Height="25" Width="100" Click="editBtn_Click">Redigere</Button>
@@ -27,4 +27,14 @@
             </DataGrid.Columns>
         </DataGrid>
     </DockPanel>
+    <Popup Name="popup1" HorizontalAlignment="Left" Margin="338,261,0,0" AllowsTransparency="True" VerticalAlignment="Top" Height="38" Width="153">
+        <Grid>
+            <ProgressBar HorizontalAlignment="Left"   
+                     Name="progressBar1" Height="25" 
+                     VerticalAlignment="Center" Width="130" 
+                     Foreground="#FF3EA3EA" 
+                     Value="{Binding ElementName=textBox1, Path=Text.Length, Mode=OneTime}"
+                     Maximum="140" ForceCursor="False" />
+        </Grid>
+    </Popup>
 </Page>

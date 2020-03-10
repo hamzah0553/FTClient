@@ -12,89 +12,104 @@ using FTClientApplication.Service;
 
 namespace FTClientApplication.ViewModel.Dk
 {
-    class GovernmentVM: IExcelAdapter
+    class GovernmentVM : IExcelAdapter
     {
-        FTDatabaseEntities entities = new FTDatabaseEntities();
-        DBService service = new DBService(); 
+        FTDatabaseEntities topLevelContext = new FTDatabaseEntities();
+        DBService service = new DBService();
 
         //Returns list of Government
         public List<Government> GetGovernment()
         {
-            return entities.Government.ToList();
+            return topLevelContext.Government.ToList();
         }
 
         //Returns ministers depending on government
         public List<CustomMinister> GetMinisters()
         {
-            List<CustomMinister> ministers = new List<CustomMinister>();
-            List<Minister> tempList = entities.Minister.Where(s => s.MinisterialPost.Government.id == 1).ToList();
-            foreach (var item in tempList)
+            using (var entities = new FTDatabaseEntities())
             {
-                ContactInfo contact = item.Politician.ContactInfo.FirstOrDefault();
-                CustomMinister minister = new CustomMinister()
+
+                List<CustomMinister> ministers = new List<CustomMinister>();
+                List<Minister> tempList = entities.Minister.Where(s => s.MinisterialPost.Government.id == 1).ToList();
+                foreach (var item in tempList)
                 {
-                    GovernmentId = item.MinisterialPost.governmentId,
-                    Firstname = item.Politician.firstname,
-                    Lastname = item.Politician.lastname,
-                    Party = item.Politician.Party.name,
-                    Title = item.MinisterialPost.title
-                };
-                if (contact != null)
-                {
-                    if (contact.email != null)
+                    ContactInfo contact = item.Politician.ContactInfo.FirstOrDefault();
+                    CustomMinister minister = new CustomMinister()
                     {
-                        minister.Email = contact.email;
-                    }
-                    if (contact.phone != null)
+                        GovernmentId = item.MinisterialPost.governmentId,
+                        Firstname = item.Politician.firstname,
+                        Lastname = item.Politician.lastname,
+                        Party = item.Politician.Party.name,
+                        Title = item.MinisterialPost.title
+                    };
+                    if (contact != null)
                     {
-                        minister.Phone = contact.phone;
+                        if (contact.email != null)
+                        {
+                            minister.Email = contact.email;
+                        }
+                        if (contact.phone != null)
+                        {
+                            minister.Phone = contact.phone;
+                        }
                     }
+                    ministers.Add(minister);
                 }
-                ministers.Add(minister);
+                return ministers;
             }
-            return ministers;
         }
         //Add Minister to db
         public void AddMinisters()
         {
-            MinisterScraper scraper = new MinisterScraper();
-            List<ExtractedValues> values = scraper.GetMinisters();
-            List<CustomMinister> ministers = new List<CustomMinister>();
-            foreach (var item in values)
+            using (var entities = new FTDatabaseEntities())
             {
-                Politician politician = service.GetPolitician(item.Firstname, item.Lastname);
-                if (politician == null)
+                MinisterScraper scraper = new MinisterScraper();
+                List<ExtractedValues> values = scraper.GetMinisters();
+                List<CustomMinister> ministers = new List<CustomMinister>();
+                foreach (var item in values)
                 {
-                    politician = new Politician();
-                    politician.firstname = item.Firstname;
-                    politician.lastname = item.Lastname;
-                    politician.partyId = entities.Party.Where(p => p.name.Equals(item.Party)).SingleOrDefault().id;
-                    service.AddPolitician(politician);
-
-                    politician = service.GetPolitician(item.Firstname, item.Lastname);
-                    ContactInfo contactInfo = item.Contact;
-                    contactInfo.politicianId = politician.id;
-                    Debug.WriteLine(politician.id);
-                    service.AddContactInfo(contactInfo);
-                }
-                MinisterialPost post = service.GetMinisterialPost(item.Title);
-                if (post == null)
-                {
-                    using (var context = new FTDatabaseEntities())
+                    Politician politician = service.GetPolitician(item.Firstname, item.Lastname);
+                    if (politician == null)
                     {
-                        context.MinisterialPost.Add(new MinisterialPost() { governmentId = 1, title = item.Title });
-                        context.SaveChanges();
+                        politician = new Politician();
+                        politician.firstname = item.Firstname;
+                        politician.lastname = item.Lastname;
+                        politician.partyId = entities.Party.Where(p => p.name.Equals(item.Party)).SingleOrDefault().id;
+                        service.AddPolitician(politician);
+
+                        politician = service.GetPolitician(item.Firstname, item.Lastname);
+                        ContactInfo contactInfo = item.Contact;
+                        contactInfo.politicianId = politician.id;
+                        Debug.WriteLine(politician.id);
+                        service.AddContactInfo(contactInfo);
                     }
+                    MinisterialPost post = service.GetMinisterialPost(item.Title);
+                    if (post == null)
+                    {
+                        using (var context = new FTDatabaseEntities())
+                        {
+                            context.MinisterialPost.Add(new MinisterialPost() { governmentId = 1, title = item.Title });
+                            context.SaveChanges();
+                        }
+                    }
+                    Minister minister = new Minister();
+                    minister.ministerialPostId = service.GetMinisterialPost(item.Title).id;
+                    minister.politicianId = politician.id;
+                    minister.startDate = DateTime.Now.Date;
+                    entities.Minister.Add(minister);
                 }
-                Minister minister = new Minister();
-                minister.ministerialPostId = service.GetMinisterialPost(item.Title).id;
-                minister.politicianId = politician.id;
-                minister.startDate = DateTime.Now.Date;
-                entities.Minister.Add(minister);
+                entities.SaveChanges();
             }
-            entities.SaveChanges();
+
         }
 
+        public void UpdateGovernment()
+        {
+            topLevelContext.Database.ExecuteSqlCommand("TRUNCATE TABLE [Minister]");
+            AddMinisters();
+        }
+
+        //Excel adapter implementation
         public List<List<string>> ConvertData()
         {
             List<CustomMinister> ministers = GetMinisters();
@@ -123,12 +138,12 @@ namespace FTClientApplication.ViewModel.Dk
         }
     }
 
-       /* public void RemoveMinisters()
-        {
-            entities.min
-        }*/
-        //Add politician to db
-       
+    /* public void RemoveMinisters()
+     {
+         entities.min
+     }*/
+    //Add politician to db
+
 
     public class CustomMinister
     {
@@ -141,4 +156,4 @@ namespace FTClientApplication.ViewModel.Dk
         public string Email { get; set; }
         public string Phone { get; set; }
     }
-} 
+}

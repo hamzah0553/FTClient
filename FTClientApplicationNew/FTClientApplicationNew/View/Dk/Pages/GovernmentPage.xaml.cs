@@ -38,6 +38,12 @@ namespace FTClientApplication.View.Dk.Pages
             }
         }
 
+        private void RefreshGrid()
+        {
+            governmentGrid.Items.Clear();
+            FillGrid();
+        }
+
         private void governmentBox_DropDownClosed(object sender, EventArgs e)
         {
 
@@ -63,9 +69,10 @@ namespace FTClientApplication.View.Dk.Pages
 
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
+        private void updateGovBtn_Click(object sender, RoutedEventArgs e)
         {
-
+            governmentVM.UpdateGovernment();
+            RefreshGrid();
         }
     }
 }
